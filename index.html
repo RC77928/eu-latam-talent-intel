@@ -9,18 +9,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg-0: oklch(0.14 0.008 250);
-    --bg-1: oklch(0.18 0.009 250);
-    --bg-2: oklch(0.21 0.010 250);
-    --bg-3: oklch(0.25 0.011 250);
-    --line: oklch(0.30 0.010 250);
+    /* base */
+    --bg-0: oklch(0.14 0.008 250);       /* deepest — app background */
+    --bg-1: oklch(0.18 0.009 250);       /* sidebar / header */
+    --bg-2: oklch(0.21 0.010 250);       /* cards */
+    --bg-3: oklch(0.25 0.011 250);       /* hover / raised */
+    --line: oklch(0.30 0.010 250);       /* dividers */
     --line-soft: oklch(0.25 0.010 250);
 
-    --fg-0: oklch(0.97 0.005 250);
-    --fg-1: oklch(0.78 0.008 250);
-    --fg-2: oklch(0.58 0.010 250);
-    --fg-3: oklch(0.42 0.010 250);
+    /* text */
+    --fg-0: oklch(0.97 0.005 250);       /* primary */
+    --fg-1: oklch(0.78 0.008 250);       /* secondary */
+    --fg-2: oklch(0.58 0.010 250);       /* tertiary / labels */
+    --fg-3: oklch(0.42 0.010 250);       /* muted */
 
+    /* accents */
     --amber: oklch(0.80 0.14 75);
     --amber-dim: oklch(0.80 0.14 75 / 0.15);
     --cyan:  oklch(0.76 0.11 210);
@@ -44,479 +47,3029 @@
     letter-spacing: -0.005em;
   }
 
-  .app { display: flex; flex-direction: column; min-height: 100vh; }
+  /* ===== App shell ===== */
+  .app {
+    display: grid;
+    grid-template-rows: 56px 1fr;
+    grid-template-columns: 260px 1fr;
+    grid-template-areas:
+      "header header"
+      "sidebar main";
+    height: 100vh;
+    min-height: 100vh;
+  }
 
-  /* Header */
+  /* ===== Header ===== */
   .hd {
+    grid-area: header;
     background: var(--bg-1);
     border-bottom: 1px solid var(--line);
-    display: flex; align-items: center;
-    padding: 0 24px; gap: 20px; height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 20px;
+  }
+  .hd__brand {
+    display: flex; align-items: center; gap: 10px;
+    padding-right: 20px;
+    border-right: 1px solid var(--line);
+    height: 100%;
+    width: 240px;
+    margin-left: -20px;
+    padding-left: 20px;
   }
   .hd__mark {
     width: 22px; height: 22px;
     border: 1.5px solid var(--amber);
-    transform: rotate(45deg); position: relative;
+    position: relative;
+    transform: rotate(45deg);
   }
   .hd__mark::after {
-    content: ""; position: absolute; inset: 3px;
-    background: var(--amber); opacity: 0.6;
+    content: "";
+    position: absolute; inset: 3px;
+    background: var(--amber);
+    opacity: 0.6;
   }
-  .hd__wm {
-    font-family: var(--mono); font-size: 11px; font-weight: 600;
-    letter-spacing: 0.18em; color: var(--fg-1); text-transform: uppercase;
-  }
-  .hd__title {
-    font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
-    border-left: 1px solid var(--line); padding-left: 20px; margin-left: 4px;
-  }
-  .hd__title small { color: var(--fg-2); font-weight: 400; font-family: var(--mono); font-size: 10.5px; margin-left: 8px; letter-spacing: 0.08em; }
-  .hd__spacer { flex: 1; }
-  .hd__status {
-    font-family: var(--mono); font-size: 10.5px; color: var(--fg-2);
-    display: flex; align-items: center; gap: 16px;
-  }
-  .hd__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pos); display: inline-block; margin-right: 6px; box-shadow: 0 0 8px currentColor; }
-  .hd__owner { display: flex; align-items: center; gap: 10px; padding-left: 18px; border-left: 1px solid var(--line); }
-  .hd__avatar {
-    width: 30px; height: 30px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--amber), var(--cyan));
-    display: grid; place-items: center; font-family: var(--mono);
-    font-weight: 700; font-size: 10px; color: var(--bg-0);
-  }
-
-  /* Tabs */
-  .tabs {
-    background: var(--bg-1);
-    border-bottom: 1px solid var(--line);
-    padding: 0 24px; display: flex; gap: 0;
-    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+  .hd__wordmark {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--fg-1);
     text-transform: uppercase;
   }
-  .tab {
-    padding: 14px 22px; cursor: pointer; color: var(--fg-2);
-    border-bottom: 2px solid transparent; margin-bottom: -1px;
-    transition: color 0.15s, border-color 0.15s;
-    user-select: none;
+  .hd__title {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--fg-0);
   }
-  .tab:hover { color: var(--fg-1); }
-  .tab.is-active { color: var(--fg-0); border-bottom-color: var(--amber); }
-  .tab__count { color: var(--fg-3); margin-left: 8px; font-weight: 400; }
-  .tab.is-active .tab__count { color: var(--cyan); }
+  .hd__title small {
+    display: block;
+    font-size: 10px;
+    font-family: var(--mono);
+    font-weight: 500;
+    color: var(--fg-2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .hd__spacer { flex: 1; }
+  .hd__meta {
+    display: flex; align-items: center; gap: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-2);
+  }
+  .hd__meta .lbl { color: var(--fg-3); margin-right: 6px; text-transform: uppercase; letter-spacing: 0.1em; }
+  .hd__meta .val { color: var(--fg-0); }
+  .pulse {
+    display: inline-block;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--pos);
+    margin-right: 8px;
+    box-shadow: 0 0 0 0 var(--pos);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 oklch(0.78 0.13 150 / 0.5); }
+    70%  { box-shadow: 0 0 0 6px oklch(0.78 0.13 150 / 0); }
+    100% { box-shadow: 0 0 0 0 oklch(0.78 0.13 150 / 0); }
+  }
+  .hd__user {
+    display: flex; align-items: center; gap: 10px;
+    padding-left: 20px;
+    border-left: 1px solid var(--line);
+    height: 100%;
+  }
+  .hd__avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--bg-3);
+    display: grid; place-items: center;
+    font-size: 11px; font-weight: 600;
+    color: var(--fg-0);
+  }
+  .hd__role { font-size: 11px; color: var(--fg-2); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; }
 
-  /* Main */
-  .main { padding: 24px; max-width: 1600px; margin: 0 auto; width: 100%; }
+  /* ===== Sidebar ===== */
+  .sb {
+    grid-area: sidebar;
+    background: var(--bg-1);
+    border-right: 1px solid var(--line);
+    padding: 18px 12px;
+    overflow-y: auto;
+  }
+  .sb__section {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--fg-3);
+    text-transform: uppercase;
+    padding: 8px 12px;
+    margin-top: 4px;
+  }
+  .sb__nav { display: flex; flex-direction: column; gap: 2px; }
+  .navbtn {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 12px;
+    background: transparent;
+    border: none;
+    border-left: 2px solid transparent;
+    color: var(--fg-1);
+    font-family: var(--sans);
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    transition: background .12s, color .12s, border-color .12s;
+    width: 100%;
+  }
+  .navbtn:hover { background: var(--bg-2); color: var(--fg-0); }
+  .navbtn.is-active {
+    background: var(--bg-2);
+    color: var(--fg-0);
+    border-left-color: var(--amber);
+  }
+  .navbtn .num {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--fg-3);
+    min-width: 18px;
+    padding-top: 2px;
+  }
+  .navbtn.is-active .num { color: var(--amber); }
+  .navbtn .lbl { display: block; font-weight: 500; }
+  .navbtn .sub {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  .sb__foot {
+    margin-top: auto;
+    padding: 12px;
+    border-top: 1px solid var(--line-soft);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sb__foot .row { display: flex; justify-content: space-between; }
+  .sb__foot .row b { color: var(--fg-1); font-weight: 500; }
+
+  .sb { display: flex; flex-direction: column; }
+  .sb__nav-wrap { flex: 1; }
+
+  /* ===== Main ===== */
+  .main {
+    grid-area: main;
+    overflow-y: auto;
+    padding: 24px 28px 40px;
+  }
+
+  .view-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line-soft);
+    margin-bottom: 20px;
+  }
+  .view-head__left .eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .view-head__left h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .view-head__left .desc {
+    margin-top: 6px;
+    color: var(--fg-2);
+    font-size: 12px;
+    max-width: 620px;
+  }
+  .view-head__right {
+    display: flex; gap: 8px;
+  }
+  .chip {
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    background: var(--bg-1);
+    color: var(--fg-1);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .chip:hover { background: var(--bg-2); color: var(--fg-0); }
+  .chip.is-on { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
 
   /* KPI strip */
   .kpis {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
     margin-bottom: 20px;
   }
   .kpi {
-    background: var(--bg-2); border: 1px solid var(--line);
-    border-radius: 10px; padding: 16px 18px;
+    background: var(--bg-1);
+    padding: 16px 18px;
   }
-  .kpi__lbl { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; color: var(--fg-2); text-transform: uppercase; margin-bottom: 6px; }
-  .kpi__val { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-  .kpi__val small { font-size: 13px; color: var(--fg-2); font-weight: 400; margin-left: 4px; }
-  .kpi__sub { font-size: 11px; color: var(--fg-2); margin-top: 4px; font-family: var(--mono); }
+  .kpi .lbl {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--fg-2);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .kpi .val {
+    font-family: var(--mono);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--fg-0);
+    letter-spacing: -0.01em;
+  }
+  .kpi .val .unit { font-size: 12px; color: var(--fg-2); margin-left: 4px; font-weight: 400; }
+  .kpi .delta {
+    margin-top: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+  .delta.up   { color: var(--pos); }
+  .delta.down { color: var(--neg); }
+  .delta .arr { margin-right: 4px; }
 
-  /* Zone chips */
-  .zones {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+  /* Content grid */
+  .grid {
+    display: grid;
+    gap: 16px;
   }
-  .zone {
-    background: var(--bg-2); border: 1px solid var(--line);
-    border-radius: 999px; padding: 8px 14px;
-    font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .zone__flag { font-size: 13px; }
-  .zone__code { color: var(--fg-0); font-weight: 600; }
-  .zone__count { color: var(--cyan); font-variant-numeric: tabular-nums; }
-  .zone__sub { color: var(--fg-3); text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; }
+  .grid.cols-3 { grid-template-columns: 2fr 1fr; }
+  .grid.cols-2 { grid-template-columns: 1fr 1fr; }
 
-  /* Card container */
   .card {
-    background: var(--bg-2); border: 1px solid var(--line);
-    border-radius: 10px; overflow: hidden; margin-bottom: 20px;
+    background: var(--bg-1);
+    border: 1px solid var(--line);
   }
   .card__hd {
-    padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 1px solid var(--line);
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex; align-items: center; justify-content: space-between;
   }
-  .card__hd h3 { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+  .card__hd h3 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
   .card__hd .tag {
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
-    color: var(--fg-2); text-transform: uppercase;
-    background: var(--bg-3); padding: 4px 10px; border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
   .card__bd { padding: 18px; }
 
-  /* Company grid */
-  .comp-grid {
+  /* placeholder plots */
+  .plot {
+    position: relative;
+    border: 1px dashed var(--line);
+    background:
+      repeating-linear-gradient(
+        45deg,
+        transparent 0 10px,
+        oklch(0.22 0.010 250 / 0.4) 10px 11px
+      ),
+      var(--bg-2);
+    display: grid; place-items: center;
+    color: var(--fg-3);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    min-height: 260px;
+  }
+  .plot--sm { min-height: 180px; }
+  .plot__label {
+    background: var(--bg-1);
+    border: 1px solid var(--line);
+    padding: 6px 10px;
+    color: var(--fg-1);
+  }
+
+  /* Hub heatmap placeholder grid */
+  .heat {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: 100px repeat(7, 1fr);
+    gap: 2px;
+  }
+  .heat__cell {
+    aspect-ratio: 1.2 / 1;
+    background: var(--bg-2);
+    display: grid; place-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--fg-1);
+    position: relative;
+  }
+  .heat__cell.head {
+    background: transparent;
+    color: var(--fg-3);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    aspect-ratio: auto;
+    padding: 8px 0;
+  }
+  .heat__cell.rowlbl {
+    justify-content: flex-start;
+    padding-left: 4px;
+    background: transparent;
+    color: var(--fg-1);
+    font-size: 11px;
+  }
+  .heat__cell.v1 { background: oklch(0.80 0.14 75 / 0.08); }
+  .heat__cell.v2 { background: oklch(0.80 0.14 75 / 0.20); }
+  .heat__cell.v3 { background: oklch(0.80 0.14 75 / 0.40); color: var(--bg-0); }
+  .heat__cell.v4 { background: oklch(0.80 0.14 75 / 0.65); color: var(--bg-0); }
+  .heat__cell.v5 { background: oklch(0.80 0.14 75 / 0.88); color: var(--bg-0); }
+
+  /* League table */
+  table.tbl {
+    width: 100%; border-collapse: collapse;
+    font-size: 12px;
+  }
+  .tbl th, .tbl td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .tbl th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--fg-3);
+    text-transform: uppercase;
+    font-weight: 500;
+    border-bottom: 1px solid var(--line);
+  }
+  .tbl td.num, .tbl th.num { text-align: right; font-family: var(--mono); }
+  .tbl tr:hover td { background: var(--bg-2); }
+  .tbl .rank {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--amber);
+    width: 18px;
+  }
+  .bar {
+    display: inline-block;
+    vertical-align: middle;
+    height: 6px;
+    background: var(--cyan);
+    margin-right: 8px;
+    opacity: 0.7;
+  }
+
+  /* Flow list */
+  .flow {
+    display: flex;
+    flex-direction: column;
+  }
+  .flow__row {
+    display: grid;
+    grid-template-columns: 60px 1fr auto 1fr 70px;
     gap: 14px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 12px;
+  }
+  .flow__row:last-child { border-bottom: none; }
+  .flow__date {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.06em;
+  }
+  .flow__from, .flow__to {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .flow__org { color: var(--fg-0); font-weight: 500; }
+  .flow__loc {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .flow__arrow {
+    color: var(--amber);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .flow__amt {
+    text-align: right;
+    font-family: var(--mono);
+    color: var(--fg-1);
+    font-size: 11px;
+  }
+  .flow__to { text-align: left; }
+
+  /* Salary matrix */
+  .mtx {
+    display: grid;
+    grid-template-columns: 160px repeat(5, 1fr);
+    font-size: 11px;
+  }
+  .mtx__cell {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line-soft);
+    border-right: 1px solid var(--line-soft);
+    font-family: var(--mono);
+  }
+  .mtx__cell:last-child { border-right: none; }
+  .mtx__cell.head {
+    font-weight: 600;
+    color: var(--fg-2);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .mtx__cell.role {
+    color: var(--fg-0);
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 12px;
+  }
+  .mtx__cell .prem {
+    display: inline-block;
+    padding: 1px 6px;
+    margin-left: 6px;
+    font-size: 10px;
+    color: var(--amber);
+    border: 1px solid var(--amber);
+  }
+  .mtx__cell.hot {
+    color: var(--amber);
+    background: var(--amber-dim);
+  }
+
+  /* ===== Salary range chart ===== */
+  .rchart { padding: 8px 0 4px; }
+  .rchart__axis {
+    display: grid;
+    grid-template-columns: 280px 1fr 120px;
+    align-items: center;
+    padding: 8px 18px 12px;
+    border-bottom: 1px solid var(--line-soft);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .rchart__axis .ascale {
+    position: relative;
+    height: 18px;
+    margin-right: 8px;
+  }
+  .rchart__axis .ascale span {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+  }
+  .rchart__axis .ascale span:first-child { transform: translateX(0); }
+  .rchart__axis .ascale span:last-child { transform: translateX(-100%); }
+  .rchart__axis .atick {
+    position: absolute;
+    left: 0; right: 0; top: 16px;
+    height: 1px;
+    background: var(--line-soft);
+  }
+  .rchart__axis .atick i {
+    position: absolute;
+    top: -3px;
+    width: 1px;
+    height: 4px;
+    background: var(--line);
+  }
+
+  .rrow {
+    display: grid;
+    grid-template-columns: 280px 1fr 120px;
+    align-items: center;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    transition: background 120ms ease;
+  }
+  .rrow:hover { background: var(--bg-3); }
+  .rrow:last-child { border-bottom: none; }
+
+  .rrow__role {
+    padding-right: 16px;
+  }
+  .rrow__role .rn {
+    color: var(--fg-0);
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+  .rrow__role .rm {
+    color: var(--fg-2);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  .rrow__plot {
+    position: relative;
+    height: 30px;
+    margin-right: 16px;
+  }
+  .rrow__plot::before {
+    /* baseline grid */
+    content: "";
+    position: absolute;
+    inset: 14px 0 14px 0;
+    background: repeating-linear-gradient(
+      to right,
+      transparent 0, transparent calc(10% - 1px),
+      var(--line-soft) calc(10% - 1px), var(--line-soft) 10%
+    );
+    opacity: 0.4;
+  }
+  .rbar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 10px;
+    display: flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-2);
+  }
+  .rbar.base {
+    background: var(--fg-3);
+    height: 6px;
+  }
+  .rbar.prem {
+    background: var(--amber);
+    height: 10px;
+    box-shadow: 0 0 0 1px var(--amber);
+  }
+  .rbar .rbar__cap {
+    position: absolute;
+    left: 100%;
+    padding-left: 6px;
+    white-space: nowrap;
+    color: var(--fg-1);
+  }
+  .rbar .rbar__cap.inside {
+    left: auto;
+    right: 6px;
+    padding-left: 0;
+    color: var(--bg-0);
+    font-weight: 600;
+    max-width: calc(100% - 12px);
+    overflow: hidden;
+    text-overflow: clip;
+  }
+  .rbar.prem .rbar__cap { color: var(--amber); font-weight: 600; }
+  .rbar.prem .rbar__cap.inside { color: var(--bg-0); }
+
+  .rdot {
+    position: absolute;
+    top: 50%;
+    width: 1px;
+    height: 14px;
+    background: var(--fg-3);
+    transform: translate(-50%, -50%);
+  }
+
+  .rrow__gap {
+    padding-left: 8px;
+    border-left: 1px solid var(--line-soft);
+  }
+  .rrow__gap .gpct {
+    color: var(--amber);
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .rrow__gap .glbl {
+    color: var(--fg-2);
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .rrow.is-hero .rrow__gap .gpct { color: var(--amber); }
+
+  .rlegend {
+    display: flex;
+    gap: 20px;
+    padding: 12px 18px;
+    border-top: 1px solid var(--line-soft);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    align-items: center;
+  }
+  .rlegend .rsw {
+    display: inline-block;
+    width: 18px; height: 6px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .rlegend .rsw.base { background: var(--fg-3); }
+  .rlegend .rsw.prem { background: var(--amber); height: 10px; }
+
+  /* ===== Kanban — Urgent Reqs ===== */
+  .kanban {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .kcol {
+    background: var(--bg-1);
+    display: flex;
+    flex-direction: column;
+    min-height: 520px;
+  }
+  .kcol__hd {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .kcol__hd .kt {
+    color: var(--fg-0);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .kcol__hd .ksub {
+    color: var(--fg-2);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    margin-top: 3px;
+  }
+  .kcol__hd .kcount {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--amber);
+    border: 1px solid var(--amber);
+    padding: 2px 7px;
+    letter-spacing: 0.06em;
+  }
+  .kcol__bd {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .kjob {
+    background: var(--bg-2);
+    border: 1px solid var(--line-soft);
+    border-left: 2px solid var(--fg-3);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color 120ms ease, background 120ms ease, transform 120ms ease;
+    cursor: pointer;
+  }
+  .kjob:hover {
+    background: var(--bg-3);
+    border-left-color: var(--amber);
+    transform: translateX(1px);
+  }
+  .kjob.is-hot { border-left-color: var(--amber); }
+  .kjob.is-hot .kjob__co { color: var(--amber); }
+
+  .kjob__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .kjob__co {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--fg-2);
+    text-transform: uppercase;
+  }
+  .kjob__age {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-2);
+  }
+  .kjob__age.new {
+    color: var(--amber);
+    border: 1px solid var(--amber);
+    padding: 1px 5px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .kjob__title {
+    color: var(--fg-0);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .kjob__meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-2);
+    flex-wrap: wrap;
+  }
+  .kjob__meta .dot {
+    width: 2px; height: 2px;
+    background: var(--fg-3);
+    border-radius: 50%;
+  }
+  .kjob__pay {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--amber);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .kjob__pay .pu {
+    color: var(--fg-2);
+    font-weight: 400;
+    font-size: 10px;
+    margin-left: 4px;
+  }
+  .kjob__tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .kjob__tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-1);
+    background: var(--bg-3);
+    padding: 2px 6px;
+    border: 1px solid var(--line-soft);
+  }
+  .kjob__tag.amber { color: var(--amber); border-color: var(--amber); background: transparent; }
+  .kjob__tag.cyan  { color: var(--cyan); border-color: var(--cyan);  background: transparent; }
+
+  .kjob__src {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 6px;
+    border-top: 1px dashed var(--line-soft);
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--fg-2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .kjob__src b { color: var(--fg-1); font-weight: 500; }
+
+  /* ===== Free Zone duel layout ===== */
+  .duel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 16px;
+  }
+  .zone {
+    background: var(--bg-1);
+    display: flex;
+    flex-direction: column;
+  }
+  .zone__hd {
+    padding: 18px 20px 16px;
+    border-bottom: 1px solid var(--line-soft);
+    position: relative;
+  }
+  .zone__hd::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .zone--difc .zone__hd::before { background: var(--amber); }
+  .zone--adgm .zone__hd::before { background: var(--cyan); }
+
+  .zone__eyebrow {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-3);
+    margin-bottom: 8px;
+  }
+  .zone__eyebrow .flag {
+    display: inline-block;
+    width: 18px; height: 12px;
+    background: var(--bg-3);
+    position: relative;
+    overflow: hidden;
+  }
+  /* UAE-adjacent flag placeholders — abstracted to stripes, NOT recreating the actual flag */
+  .zone--difc .zone__eyebrow .flag { background: var(--amber-dim); border: 1px solid var(--amber); }
+  .zone--adgm .zone__eyebrow .flag { background: var(--cyan-dim); border: 1px solid var(--cyan); }
+
+  .zone--difc .zone__eyebrow { color: var(--amber); }
+  .zone--adgm .zone__eyebrow { color: var(--cyan); }
+
+  .zone__name {
+    display: flex; align-items: baseline; gap: 12px;
+    margin-bottom: 4px;
+  }
+  .zone__name h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .zone__name .code {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .zone__reg {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-2);
+    letter-spacing: 0.04em;
+  }
+
+  .zone__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .zone__stat {
+    background: var(--bg-1);
+    padding: 12px 20px;
+  }
+  .zone__stat .k {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: var(--fg-3);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .zone__stat .v {
+    font-family: var(--mono);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--fg-0);
+  }
+  .zone__stat .d {
+    font-family: var(--mono);
+    font-size: 10px;
+    margin-top: 2px;
+  }
+
+  .zone__bd { padding: 18px 20px 20px; flex: 1; }
+
+  .zone__section-title {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .zone__section-title h4 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fg-0);
+  }
+  .zone__section-title .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Competitor bar chart */
+  .comp-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
   }
   .comp {
-    background: var(--bg-0); border: 1px solid var(--line-soft);
-    border-radius: 8px; padding: 14px;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    align-items: start;
   }
-  .comp__hd {
-    display: flex; align-items: baseline; justify-content: space-between;
-    margin-bottom: 10px; gap: 10px;
+  .comp__head {
+    display: flex; flex-direction: column; gap: 4px;
+    padding-top: 2px;
   }
-  .comp__name { font-weight: 600; font-size: 13px; }
-  .comp__zone {
-    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
-    color: var(--fg-2); text-transform: uppercase;
-    background: var(--bg-3); padding: 3px 8px; border-radius: 4px;
+  .comp__logo {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .comp__mark {
+    width: 22px; height: 22px;
+    display: grid; place-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--fg-0);
+    background: var(--bg-3);
+    border: 1px solid var(--line);
+  }
+  .comp__name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg-0);
+  }
+  .comp__meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
   }
   .comp__total {
-    font-family: var(--mono); font-size: 11px; color: var(--cyan);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-1);
+    margin-top: 4px;
+  }
+  .comp__total b { color: var(--fg-0); font-weight: 600; font-size: 14px; }
+
+  .bars {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .bars__row {
+    display: grid;
+    grid-template-columns: 1fr 32px;
+    gap: 10px;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+  }
+  .bars__track {
+    position: relative;
+    height: 22px;
+    background: var(--bg-2);
+    border: 1px solid transparent;
+    transition: border-color .15s, background .15s;
+  }
+  .bars__fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: var(--cyan);
+    opacity: 0.55;
+    transition: opacity .15s;
+  }
+  .zone--difc .bars__fill { background: var(--amber); }
+  .zone--adgm .bars__fill { background: var(--cyan); }
+
+  .bars__label {
+    position: absolute;
+    left: 10px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    color: var(--fg-0);
+    white-space: nowrap;
+    z-index: 1;
+    font-weight: 500;
+  }
+  .bars__label .chtag {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 0 5px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid currentColor;
+    vertical-align: 1px;
+  }
+  .bars__num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-1);
+    text-align: right;
+  }
+  .bars__row:hover .bars__track { border-color: var(--fg-2); background: var(--bg-3); }
+  .bars__row:hover .bars__fill { opacity: 0.85; }
+
+  .bars__row.is-hot .bars__track { box-shadow: inset 0 0 0 1px currentColor; }
+  .zone--difc .bars__row.is-hot { color: var(--amber); }
+  .zone--adgm .bars__row.is-hot { color: var(--cyan); }
+  .bars__row.is-hot .bars__label { color: currentColor; }
+  .bars__row.is-hot .bars__label .chtag { background: currentColor; color: var(--bg-0); border-color: currentColor; }
+
+  /* Zone signal strip */
+  .zone__signal {
+    margin-top: 18px;
+    padding: 12px 14px;
+    background: var(--bg-2);
+    border-left: 2px solid var(--fg-3);
+    font-size: 11px;
+    color: var(--fg-1);
+    line-height: 1.55;
+  }
+  .zone--difc .zone__signal { border-left-color: var(--amber); }
+  .zone--adgm .zone__signal { border-left-color: var(--cyan); }
+  .zone__signal b { color: var(--fg-0); font-weight: 600; }
+  .zone__signal .sig-tag {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 1px 6px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .zone--difc .zone__signal .sig-tag { color: var(--amber); border: 1px solid var(--amber); }
+  .zone--adgm .zone__signal .sig-tag { color: var(--cyan);  border: 1px solid var(--cyan); }
+
+  /* Custom tooltip */
+  .tt {
+    position: fixed;
+    z-index: 1000;
+    max-width: 320px;
+    background: var(--bg-0);
+    border: 1px solid var(--amber);
+    padding: 14px 16px;
+    box-shadow: 0 12px 40px oklch(0 0 0 / 0.6), 0 0 0 1px oklch(0 0 0 / 0.4);
+    font-size: 12px;
+    color: var(--fg-0);
+    line-height: 1.55;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity .12s, transform .12s;
+  }
+  .tt.is-on { opacity: 1; transform: translateY(0); }
+  .tt.zone-adgm { border-color: var(--cyan); }
+  .tt__tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tt.zone-adgm .tt__tag { color: var(--cyan); }
+  .tt__tag::before {
+    content: "◆";
+    font-size: 10px;
+  }
+  .tt__title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg-0);
+    margin-bottom: 6px;
+    letter-spacing: -0.005em;
+  }
+  .tt__body {
+    color: var(--fg-1);
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .tt__body b { color: var(--fg-0); font-weight: 600; }
+  .tt__foot {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex; justify-content: space-between; gap: 12px;
+  }
+  .tt__foot b { color: var(--fg-1); font-weight: 500; }
+
+  /* ===== Sankey flow diagram ===== */
+  .sankey-wrap {
+    position: relative;
+    padding: 8px 0;
+  }
+  .sankey-svg { display: block; width: 100%; height: auto; }
+
+  .snode rect {
+    transition: fill .15s, stroke .15s;
+  }
+  .snode text.label {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    fill: var(--fg-0);
+    letter-spacing: -0.005em;
+  }
+  .snode text.sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    fill: var(--fg-3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .snode text.count {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    fill: var(--fg-1);
   }
 
-  /* Bars */
-  .bars { display: flex; flex-direction: column; gap: 8px; }
-  .bar {
-    display: grid; grid-template-columns: 120px 1fr 36px;
-    align-items: center; gap: 10px; font-size: 11.5px;
+  .slink {
+    fill: none;
+    stroke-opacity: 0.22;
+    transition: stroke-opacity .15s;
+    cursor: pointer;
   }
-  .bar__lbl { color: var(--fg-1); font-weight: 500; display: flex; align-items: center; gap: 6px; }
-  .bar__track {
-    height: 6px; background: var(--bg-3); border-radius: 4px; overflow: hidden;
+  .slink:hover { stroke-opacity: 0.75; }
+  .slink.dim   { stroke-opacity: 0.06; }
+
+  .slegend {
+    display: flex;
+    gap: 18px;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--line-soft);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    flex-wrap: wrap;
   }
-  .bar__fill {
-    height: 100%; background: linear-gradient(90deg, var(--cyan-dim), var(--cyan));
-    border-radius: 4px; transition: width 0.5s ease-out;
-  }
-  .bar.is-hot .bar__fill {
-    background: linear-gradient(90deg, var(--amber-dim), var(--amber));
-  }
-  .bar__n {
-    font-family: var(--mono); font-size: 11px; color: var(--fg-0);
-    font-variant-numeric: tabular-nums; text-align: right;
-  }
-  .hot-tag {
-    font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
-    color: var(--amber); background: var(--amber-dim);
-    padding: 1px 6px; border-radius: 3px; text-transform: uppercase;
+  .slegend .swatch {
+    display: inline-block;
+    width: 22px; height: 8px;
+    margin-right: 6px;
+    vertical-align: middle;
   }
 
-  /* Empty state */
-  .empty {
-    text-align: center; padding: 60px 20px;
-    color: var(--fg-2); font-family: var(--mono); font-size: 12px;
-    background: var(--bg-2); border: 1px dashed var(--line); border-radius: 10px;
+  /* Key alerts table */
+  .alerts { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .alerts thead th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--fg-3);
+    text-transform: uppercase;
+    font-weight: 500;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-2);
   }
-  .empty b { color: var(--fg-1); font-weight: 600; }
+  .alerts td {
+    padding: 18px 16px;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: top;
+  }
+  .alerts tr:last-child td { border-bottom: none; }
+  .alerts tr:hover td { background: var(--bg-2); }
 
-  /* Footer */
-  .ft {
-    padding: 24px; text-align: center;
-    font-family: var(--mono); font-size: 10.5px; color: var(--fg-3);
-    border-top: 1px solid var(--line); margin-top: auto;
+  .alerts .alert-sev {
+    width: 4px;
+    padding: 0 !important;
+    border-bottom: none !important;
+  }
+  .alerts td.alert-sev { background: var(--neg); }
+  .alerts tr.sev-high    td.alert-sev { background: var(--neg); }
+  .alerts tr.sev-elevated td.alert-sev { background: var(--amber); }
+
+  .exec {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 220px;
+  }
+  .exec__av {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .exec__photo {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--bg-3);
+    border: 1px solid var(--line);
+    display: grid; place-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--fg-0);
+    flex-shrink: 0;
+  }
+  .exec__n {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg-0);
+    line-height: 1.3;
+  }
+  .exec__t {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .exec__tag {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 1px 6px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--neg);
+    border: 1px solid var(--neg);
+    align-self: flex-start;
+  }
+  tr.sev-elevated .exec__tag { color: var(--amber); border-color: var(--amber); }
+
+  .firm {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .firm__name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg-0);
+  }
+  .firm__meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .firm__tenure {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-2);
+  }
+
+  .impact {
+    max-width: 360px;
+    line-height: 1.55;
+    color: var(--fg-1);
+  }
+  .impact b { color: var(--fg-0); font-weight: 600; }
+  .impact .imp-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: var(--amber);
+  }
+
+  .arrow-col {
+    text-align: center;
+    color: var(--amber);
+    font-family: var(--mono);
+    font-size: 16px;
+    padding: 18px 4px !important;
+  }
+
+  /* utility */
+  .view { display: none; }
+  .view.is-on { display: block; }
+
+  /* scrollbar subtle */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--bg-3); }
+  ::-webkit-scrollbar-track { background: var(--bg-0); }
+
+  /* ===== Region tab bar ===== */
+  .rtab {
+    position: sticky; top: 0; z-index: 5;
+    display: flex; align-items: center; gap: 6px;
+    padding: 12px 28px; margin: -28px -28px 18px;
+    background: linear-gradient(180deg, var(--bg-0) 70%, transparent);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .rtab__lbl {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-2);
+    margin-right: 14px;
+  }
+  .rtab__btn {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--fg-1);
+    font: 500 12px var(--sans);
+    padding: 7px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    letter-spacing: -0.003em;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: border-color .12s, color .12s, background .12s;
+  }
+  .rtab__btn:hover { border-color: var(--fg-2); color: var(--fg-0); }
+  .rtab__btn.is-on {
+    background: var(--amber-dim);
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+  .rtab__btn .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--fg-3);
+  }
+  .rtab__btn.is-on .dot { background: var(--amber); }
+  .rtab__hint {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    letter-spacing: 0.05em;
   }
 </style>
 </head>
 <body>
 
 <div class="app">
-  <!-- Header -->
+
+  <!-- ============ HEADER ============ -->
   <header class="hd">
-    <div class="hd__mark"></div>
-    <div class="hd__wm">VT · Talent Intel</div>
-    <div class="hd__title">EU+UK · LATAM Talent Mobility <small>CFD / Retail FX competitor tracker</small></div>
-    <div class="hd__spacer"></div>
-    <div class="hd__status">
-      <span><span class="hd__dot"></span>LIVE · Adzuna</span>
-      <span id="lastSync">Last sync — —</span>
+    <div class="hd__brand">
+      <div class="hd__mark" aria-hidden="true"></div>
+      <div>
+        <div class="hd__title">EU+UK · LATAM Talent Mobility
+          <small>CHRO · Executive Intelligence</small>
+        </div>
+      </div>
     </div>
-    <div class="hd__owner">
+
+    <div class="hd__spacer"></div>
+
+    <div class="hd__meta">
+      <div><span class="lbl">Region</span><span class="val" id="regionLabel">EU+UK · Cross-Border</span></div>
+      <div><span class="lbl">FX</span><span class="val" id="fxLabel">GBP / EUR · 1.1682</span></div>
+      <div><span class="lbl">Period</span><span class="val">Q2 2026 · YTD</span></div>
+      <div>
+        <span class="pulse"></span>
+        <span class="lbl">Last sync</span>
+        <span class="val" id="lastSync">2026-04-24 17:42 UTC</span>
+      </div>
+    </div>
+
+    <div class="hd__user">
       <div class="hd__avatar">HR</div>
       <div>
         <div style="font-size:12px;font-weight:500">HR Team</div>
-        <div style="font-size:10.5px;color:var(--fg-2);font-family:var(--mono)">VT Markets</div>
+        <div class="hd__role">VT Markets</div>
       </div>
     </div>
   </header>
 
-  <!-- Tabs -->
-  <nav class="tabs" role="tablist">
-    <div class="tab is-active" data-tab="eu" role="tab">EU+UK <span class="tab__count" id="euCount">—</span></div>
-    <div class="tab"             data-tab="latam" role="tab">LATAM <span class="tab__count" id="latamCount">—</span></div>
-  </nav>
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sb">
+    <div class="sb__nav-wrap">
+      <div class="sb__section">Intelligence Views</div>
+      <nav class="sb__nav">
+        <button class="navbtn is-active" data-view="hub">
+          <span class="num">01</span>
+          <span>
+            <span class="lbl">Hub Heatmap</span>
+            <span class="sub">Hub Heatmap</span>
+          </span>
+        </button>
+        <button class="navbtn" data-view="flow">
+          <span class="num">02</span>
+          <span>
+            <span class="lbl">Mobility Flow</span>
+            <span class="sub">Mobility Flow</span>
+          </span>
+        </button>
+        <button class="navbtn" data-view="salary">
+          <span class="num">03</span>
+          <span>
+            <span class="lbl">Salary Premium Matrix</span>
+            <span class="sub">Salary Index</span>
+          </span>
+        </button>
+      </nav>
 
-  <!-- Main (rendered by JS) -->
-  <main class="main" id="main">
-    <div class="empty">Loading <b>Adzuna</b> data —</div>
+      <div class="sb__section" style="margin-top:20px">Reference</div>
+      <nav class="sb__nav">
+        <button class="navbtn" disabled style="opacity:.5;cursor:default">
+          <span class="num">—</span>
+          <span><span class="lbl">Data sources</span><span class="sub">Adzuna · FCA · BaFin · CVM</span></span>
+        </button>
+        <button class="navbtn" disabled style="opacity:.5;cursor:default">
+          <span class="num">—</span>
+          <span><span class="lbl">Methodology</span><span class="sub">v1.0 · Apr 2026</span></span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="sb__foot">
+      <div class="row"><span>Records</span><b id="footRecords">—</b></div>
+      <div class="row"><span>Coverage</span><b id="footCoverage">EU+UK · LATAM</b></div>
+      <div class="row"><span>Refresh</span><b>weekly cycle</b></div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- ---- Region tab bar (switches between EU+UK and LATAM narratives) ---- -->
+    <div class="rtab" role="tablist" aria-label="Region">
+      <span class="rtab__lbl">Region</span>
+      <button class="rtab__btn is-on" data-region="eu" role="tab" aria-selected="true">
+        <span class="dot"></span>EU + UK
+      </button>
+      <button class="rtab__btn" data-region="latam" role="tab" aria-selected="false">
+        <span class="dot"></span>LATAM
+      </button>
+      <span class="rtab__hint">Adzuna · weekly · Mon 08:30 Asia/Taipei</span>
+    </div>
+
+    <!-- ---- VIEW 1: Hub Heatmap — UK vs EU-Continental duel ---- -->
+    <section class="view is-on" data-view="hub">
+      <div class="view-head">
+        <div class="view-head__left">
+          <div class="eyebrow" data-region-eu="01 · Hub Heatmap · UK vs EU-Continental" data-region-latam="01 · Hub Heatmap · Brazil vs Mexico">01 · Hub Heatmap · UK vs EU-Continental</div>
+          <h1 data-region-eu="Hub Heatmap — UK vs EU-Continental" data-region-latam="Hub Heatmap — Brazil vs Mexico">Hub Heatmap — UK vs EU-Continental</h1>
+          <div class="desc" data-region-eu="Two CFD clusters define the EU retail market: UK (FCA, post-Brexit institutional belt) and EU-Continental (BaFin / KNF / FINMA, retail-heavy). Below is the function-mix of live competitor openings across both hubs — real-time from Adzuna plus editorial intelligence. Hover any function for the strategic read." data-region-latam="Two jurisdictions dominate LATAM online brokerage: Brazil (CVM, real-denominated deposits) and Mexico (CNBV / Banxico dual mandate). Coverage through Adzuna is structurally thin — most Brazilian brokers recruit via LinkedIn-only. Signal below is a blended view.">Two CFD clusters define the EU retail market: UK (FCA, post-Brexit institutional belt) and EU-Continental (BaFin / KNF / FINMA, retail-heavy). Below is the function-mix of live competitor openings across both hubs — real-time from Adzuna plus editorial intelligence. Hover any function for the strategic read.</div>
+        </div>
+        <div class="view-head__right">
+          <button class="chip is-on">Open Roles · 28D</button>
+          <button class="chip">Hire Velocity</button>
+          <button class="chip">License Filings</button>
+          <button class="chip">Export</button>
+        </div>
+      </div>
+
+      <!-- ====== Duel ====== -->
+      <div class="duel">
+
+        <!-- ============== Primary hub (UK in EU mode · Brazil in LATAM mode) ============== -->
+        <div class="zone zone--difc" data-region-zone="primary">
+          <div class="zone__hd">
+            <div class="zone__eyebrow">
+              <span class="flag" aria-hidden="true"></span>
+              <span class="zone__locale" data-region-eu="London · United Kingdom" data-region-latam="São Paulo · Brazil">London · United Kingdom</span>
+            </div>
+            <div class="zone__name">
+              <h2 class="zone__h2" data-region-eu="UK" data-region-latam="BR">UK</h2>
+              <span class="code zone__sub" data-region-eu="London · Post-Brexit CFD belt" data-region-latam="São Paulo · corretora cluster">London · Post-Brexit CFD belt</span>
+            </div>
+            <div class="zone__reg zone__regtext" data-region-eu="Regulator: FCA · Statutory · retail CFD leverage cap 30:1" data-region-latam="Regulator: CVM · BCB · Res. 160 paid-ad rules">Regulator: FCA · Statutory · retail CFD leverage cap 30:1</div>
+          </div>
+
+          <div class="zone__stats">
+            <div class="zone__stat">
+              <div class="k">Active Competitors</div>
+              <div class="v zone__s1" data-region-eu="11" data-region-latam="4">11</div>
+              <div class="d" style="color: var(--pos)">▲ <span data-region-eu="+2 vs. Q1" data-region-latam="+1 vs. Q1">+2 vs. Q1</span></div>
+            </div>
+            <div class="zone__stat">
+              <div class="k">Open Roles · 28D</div>
+              <div class="v zone__s2" data-region-eu="47" data-region-latam="1">47</div>
+              <div class="d" style="color: var(--pos)">▲ <span data-region-eu="+18% MoM" data-region-latam="limited Adzuna coverage">+18% MoM</span></div>
+            </div>
+            <div class="zone__stat">
+              <div class="k">Focus Signal</div>
+              <div class="v zone__s3" style="font-size: 13px; color: var(--amber)" data-region-eu="Compliance · FCA" data-region-latam="Compliance · CVM">Compliance · FCA</div>
+              <div class="d zone__s3d" style="color: var(--fg-3)" data-region-eu="SMCR reshuffle" data-region-latam="Res. 160 refresh">SMCR reshuffle</div>
+            </div>
+          </div>
+
+          <div class="zone__bd">
+            <div class="zone__section-title">
+              <h4>Competitor Hiring — Open Roles by Function</h4>
+              <span class="tag">public job posts · 28D</span>
+            </div>
+
+            <div class="comp-chart">
+              <!-- IG Group (UK placeholder — JS overlay will replace with live Adzuna rows) -->
+              <div class="comp">
+                <div class="comp__head">
+                  <div class="comp__logo">
+                    <div class="comp__mark">IG</div>
+                    <div class="comp__name">IG Group</div>
+                  </div>
+                  <div class="comp__meta">London · retail CFD</div>
+                  <div class="comp__total"><b>14</b> open roles</div>
+                </div>
+                <div class="bars">
+                  <div class="bars__row is-hot" data-comp="IG Group" data-func="Compliance / Risk" data-count="6" data-license="FCA · SMCR refresh">
+                    <div class="bars__track"><div class="bars__fill" style="width:86%"></div>
+                      <div class="bars__label">Compliance / Risk <span class="chtag">Hot</span></div>
+                    </div>
+                    <div class="bars__num">6</div>
+                  </div>
+                  <div class="bars__row" data-comp="IG Group" data-func="Sales / BD" data-count="5">
+                    <div class="bars__track"><div class="bars__fill" style="width:71%"></div>
+                      <div class="bars__label">Sales / BD</div>
+                    </div>
+                    <div class="bars__num">5</div>
+                  </div>
+                  <div class="bars__row" data-comp="IG Group" data-func="Marketing" data-count="3">
+                    <div class="bars__track"><div class="bars__fill" style="width:43%"></div>
+                      <div class="bars__label">Marketing</div>
+                    </div>
+                    <div class="bars__num">3</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CMC Markets -->
+              <div class="comp">
+                <div class="comp__head">
+                  <div class="comp__logo">
+                    <div class="comp__mark">CM</div>
+                    <div class="comp__name">CMC Markets</div>
+                  </div>
+                  <div class="comp__meta">London · retail CFD · spreadbet</div>
+                  <div class="comp__total"><b>9</b> open roles</div>
+                </div>
+                <div class="bars">
+                  <div class="bars__row is-hot" data-comp="CMC Markets" data-func="Compliance / Risk" data-count="4" data-license="FCA · ICARA review">
+                    <div class="bars__track"><div class="bars__fill" style="width:80%"></div>
+                      <div class="bars__label">Compliance / Risk <span class="chtag">Hot</span></div>
+                    </div>
+                    <div class="bars__num">4</div>
+                  </div>
+                  <div class="bars__row" data-comp="CMC Markets" data-func="Sales / BD" data-count="3">
+                    <div class="bars__track"><div class="bars__fill" style="width:60%"></div>
+                      <div class="bars__label">Sales / BD</div>
+                    </div>
+                    <div class="bars__num">3</div>
+                  </div>
+                  <div class="bars__row" data-comp="CMC Markets" data-func="Marketing" data-count="2">
+                    <div class="bars__track"><div class="bars__fill" style="width:40%"></div>
+                      <div class="bars__label">Marketing</div>
+                    </div>
+                    <div class="bars__num">2</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Plus500 UK -->
+              <div class="comp">
+                <div class="comp__head">
+                  <div class="comp__logo">
+                    <div class="comp__mark">P5</div>
+                    <div class="comp__name">Plus500 UK</div>
+                  </div>
+                  <div class="comp__meta">London · retail CFD</div>
+                  <div class="comp__total"><b>7</b> open roles</div>
+                </div>
+                <div class="bars">
+                  <div class="bars__row" data-comp="Plus500 UK" data-func="Marketing" data-count="3" data-license="FCA · perf. marketing audit">
+                    <div class="bars__track"><div class="bars__fill" style="width:67%"></div>
+                      <div class="bars__label">Marketing</div>
+                    </div>
+                    <div class="bars__num">3</div>
+                  </div>
+                  <div class="bars__row" data-comp="Plus500 UK" data-func="Compliance / Risk" data-count="2">
+                    <div class="bars__track"><div class="bars__fill" style="width:44%"></div>
+                      <div class="bars__label">Compliance / Risk</div>
+                    </div>
+                    <div class="bars__num">2</div>
+                  </div>
+                  <div class="bars__row" data-comp="Plus500 UK" data-func="Sales / BD" data-count="2">
+                    <div class="bars__track"><div class="bars__fill" style="width:44%"></div>
+                      <div class="bars__label">Sales / BD</div>
+                    </div>
+                    <div class="bars__num">2</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="zone__signal zone__signal--primary">
+              <span class="sig-tag">CHRO read</span>
+              <span data-region-eu="FCA-licensed brokers are hiring <b>Compliance / Risk</b> heavier than frontline Sales (<b>12 vs 10</b> open roles across the top three). That inversion is the SMCR-driven pattern: FCA is tightening the Internal Capital and Risk Assessment (<b>ICARA</b>) cycle and every Cat-b broker must recertify its <b>Senior Manager Functions</b>. Expect compliance pay bands to push +18–22% over the next two quarters — pull-forward risk for our London team." data-region-latam="Brazil's CVM bar on overseas-issued CFDs keeps offshore brokers hiring indirectly through LATAM subsidiaries. Our Adzuna index for BR captures only Brazilian-listed employers (BTG Pactual, Itaú, XP); most CFD-specific roles route through LinkedIn and remain invisible here. Signal is a floor, not a ceiling.">FCA-licensed brokers are hiring <b>Compliance / Risk</b> heavier than frontline Sales (<b>12 vs 10</b> open roles across the top three). That inversion is the SMCR-driven pattern: FCA is tightening the Internal Capital and Risk Assessment (<b>ICARA</b>) cycle and every Cat-b broker must recertify its <b>Senior Manager Functions</b>. Expect compliance pay bands to push +18–22% over the next two quarters — pull-forward risk for our London team.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============== Secondary hub (EU-Continental in EU mode · Mexico in LATAM mode) ============== -->
+        <div class="zone zone--adgm" data-region-zone="secondary">
+          <div class="zone__hd">
+            <div class="zone__eyebrow">
+              <span class="flag" aria-hidden="true"></span>
+              <span class="zone__locale" data-region-eu="Warsaw · Gland · Frankfurt" data-region-latam="CDMX · Monterrey">Warsaw · Gland · Frankfurt</span>
+            </div>
+            <div class="zone__name">
+              <h2 class="zone__h2" data-region-eu="EU" data-region-latam="MX">EU</h2>
+              <span class="code zone__sub" data-region-eu="Continental CFD cluster" data-region-latam="Mexican brokerage cluster">Continental CFD cluster</span>
+            </div>
+            <div class="zone__reg zone__regtext" data-region-eu="Regulators: BaFin · KNF · FINMA · ESMA 30:1 cap" data-region-latam="Regulators: CNBV · Banxico · casa de bolsa regime">Regulators: BaFin · KNF · FINMA · ESMA 30:1 cap</div>
+          </div>
+
+          <div class="zone__stats">
+            <div class="zone__stat">
+              <div class="k">Active Competitors</div>
+              <div class="v zone__s1" data-region-eu="9" data-region-latam="3">9</div>
+              <div class="d" style="color: var(--pos)">▲ <span data-region-eu="+3 vs. Q1" data-region-latam="flat vs. Q1">+3 vs. Q1</span></div>
+            </div>
+            <div class="zone__stat">
+              <div class="k">Open Roles · 28D</div>
+              <div class="v zone__s2" data-region-eu="38" data-region-latam="1">38</div>
+              <div class="d" style="color: var(--pos)">▲ <span data-region-eu="+31% MoM" data-region-latam="limited Adzuna coverage">+31% MoM</span></div>
+            </div>
+            <div class="zone__stat">
+              <div class="k">Focus Signal</div>
+              <div class="v zone__s3" style="font-size: 13px; color: var(--cyan)" data-region-eu="Sales / BD · CEE" data-region-latam="Sales / BD · Mexico">Sales / BD · CEE</div>
+              <div class="d zone__s3d" style="color: var(--fg-3)" data-region-eu="XTB regional push" data-region-latam="Actinver / GBM scaling">XTB regional push</div>
+            </div>
+          </div>
+
+          <div class="zone__bd">
+            <div class="zone__section-title">
+              <h4>Competitor Hiring — Open Roles by Function</h4>
+              <span class="tag">public job posts · 28D</span>
+            </div>
+
+            <div class="comp-chart">
+              <!-- XTB (PL HQ) -->
+              <div class="comp">
+                <div class="comp__head">
+                  <div class="comp__logo">
+                    <div class="comp__mark">XT</div>
+                    <div class="comp__name">XTB (PL HQ)</div>
+                  </div>
+                  <div class="comp__meta">Warsaw · retail CFD · EU passport</div>
+                  <div class="comp__total"><b>11</b> open roles</div>
+                </div>
+                <div class="bars">
+                  <div class="bars__row is-hot" data-comp="XTB (PL HQ)" data-func="Sales / BD" data-count="5" data-license="KNF · EU passporting">
+                    <div class="bars__track"><div class="bars__fill" style="width:83%"></div>
+                      <div class="bars__label">Sales / BD <span class="chtag">Hot</span></div>
+                    </div>
+                    <div class="bars__num">5</div>
+                  </div>
+                  <div class="bars__row" data-comp="XTB (PL HQ)" data-func="Compliance / Risk" data-count="4">
+                    <div class="bars__track"><div class="bars__fill" style="width:67%"></div>
+                      <div class="bars__label">Compliance / Risk</div>
+                    </div>
+                    <div class="bars__num">4</div>
+                  </div>
+                  <div class="bars__row" data-comp="XTB (PL HQ)" data-func="Marketing" data-count="2">
+                    <div class="bars__track"><div class="bars__fill" style="width:33%"></div>
+                      <div class="bars__label">Marketing</div>
+                    </div>
+                    <div class="bars__num">2</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Swissquote -->
+              <div class="comp">
+                <div class="comp__head">
+                  <div class="comp__logo">
+                    <div class="comp__mark">SQ</div>
+                    <div class="comp__name">Swissquote</div>
+                  </div>
+                  <div class="comp__meta">Gland · multi-asset · bank</div>
+                  <div class="comp__total"><b>9</b> open roles</div>
+                </div>
+                <div class="bars">
+                  <div class="bars__row is-hot" data-comp="Swissquote" data-func="Compliance / Risk" data-count="5" data-license="FINMA · banking license">
+                    <div class="bars__track"><div class="bars__fill" style="width:83%"></div>
+                      <div class="bars__label">Compliance / Risk <span class="chtag">Hot</span></div>
+                    </div>
+                    <div class="bars__num">5</div>
+                  </div>
+                  <div class="bars__row" data-comp="Swissquote" data-func="Sales / BD" data-count="2">
+                    <div class="bars__track"><div class="bars__fill" style="width:33%"></div>
+                      <div class="bars__label">Sales / BD</div>
+                    </div>
+                    <div class="bars__num">2</div>
+                  </div>
+                  <div class="bars__row" data-comp="Swissquote" data-func="Marketing" data-count="2">
+                    <div class="bars__track"><div class="bars__fill" style="width:33%"></div>
+                      <div class="bars__label">Marketing</div>
+                    </div>
+                    <div class="bars__num">2</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Saxo Bank -->
+              <div class="comp">
+                <div class="comp__head">
+                  <div class="comp__logo">
+                    <div class="comp__mark">SX</div>
+                    <div class="comp__name">Saxo Bank</div>
+                  </div>
+                  <div class="comp__meta">Copenhagen · multi-asset · platform</div>
+                  <div class="comp__total"><b>8</b> open roles</div>
+                </div>
+                <div class="bars">
+                  <div class="bars__row" data-comp="Saxo Bank" data-func="Sales / BD" data-count="3" data-license="Finanstilsynet · DK">
+                    <div class="bars__track"><div class="bars__fill" style="width:60%"></div>
+                      <div class="bars__label">Sales / BD</div>
+                    </div>
+                    <div class="bars__num">3</div>
+                  </div>
+                  <div class="bars__row" data-comp="Saxo Bank" data-func="Compliance / Risk" data-count="3">
+                    <div class="bars__track"><div class="bars__fill" style="width:60%"></div>
+                      <div class="bars__label">Compliance / Risk</div>
+                    </div>
+                    <div class="bars__num">3</div>
+                  </div>
+                  <div class="bars__row" data-comp="Saxo Bank" data-func="Marketing" data-count="2">
+                    <div class="bars__track"><div class="bars__fill" style="width:40%"></div>
+                      <div class="bars__label">Marketing</div>
+                    </div>
+                    <div class="bars__num">2</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="zone__signal zone__signal--secondary">
+              <span class="sig-tag">CHRO read</span>
+              <span data-region-eu="EU-continental hiring is <b>Sales-led</b> where UK is Compliance-led — an asymmetry worth reading. XTB's Warsaw HQ is pushing 5 new <b>Sales / BD</b> roles (plus 4 Compliance) as it preps its German and Iberian passport expansion, while Swissquote keeps FINMA's banking-license bar high with a Risk-heavy mix. If we want German-speaking hunters, the window is now — XTB is absorbing the local pool." data-region-latam="Mexico's CNBV treats retail CFD offerings through the SOFOM / casa de bolsa wrapper; Actinver is the only broker in the Adzuna Mexico index with a live Sales opening (MXN 7.2–9.6k / month, mid-level). The rest of the competitive field (GBM, Vector) hires via Talenteca / OCC and stays invisible here. Treat BR+MX as a structural-coverage floor.">EU-continental hiring is <b>Sales-led</b> where UK is Compliance-led — an asymmetry worth reading. XTB's Warsaw HQ is pushing 5 new <b>Sales / BD</b> roles (plus 4 Compliance) as it preps its German and Iberian passport expansion, while Swissquote keeps FINMA's banking-license bar high with a Risk-heavy mix. If we want German-speaking hunters, the window is now — XTB is absorbing the local pool.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ====== Supporting strip ====== -->
+      <div class="grid cols-2">
+        <div class="card">
+          <div class="card__hd">
+            <h3 data-region-eu="Head-to-Head · UK vs EU-Continental Velocity" data-region-latam="Head-to-Head · Brazil vs Mexico Velocity">Head-to-Head · UK vs EU-Continental Velocity</h3>
+            <span class="tag">roles posted / week</span>
+          </div>
+          <div class="card__bd">
+            <div class="plot plot--sm"><div class="plot__label" data-region-eu="[ dual line — UK (amber) vs EU-Continental (cyan) ]" data-region-latam="[ dual line — Brazil (amber) vs Mexico (cyan) ]">[ dual line — UK (amber) vs EU-Continental (cyan) ]</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__hd">
+            <h3>License / Passport Activity</h3>
+            <span class="tag">public register · 90D</span>
+          </div>
+          <div class="card__bd">
+            <div class="plot plot--sm"><div class="plot__label" data-region-eu="[ stacked bars — FCA SMCR vs MiFID II passporting ]" data-region-latam="[ stacked bars — CVM listings vs CNBV casa de bolsa ]">[ stacked bars — FCA SMCR vs MiFID II passporting ]</div></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ---- VIEW 2: Mobility Flow — Sankey + Alerts ---- -->
+    <section class="view" data-view="flow">
+      <div class="view-head">
+        <div class="view-head__left">
+          <div class="eyebrow">02 · Mobility Flow · Talent Sankey</div>
+          <h1 data-region-eu="Executive Cross-Border Flow — Source Jurisdiction → EU Competitor" data-region-latam="Executive Cross-Border Flow — Source Jurisdiction → LATAM Competitor">Executive Cross-Border Flow — Source Jurisdiction → EU Competitor</h1>
+          <div class="desc" data-region-eu="Senior CFD / brokerage executive moves across EU+UK. Left nodes are source jurisdictions (grouped by regulator); right nodes are EU+UK firms receiving the talent. Link width = QTD confirmed moves sourced from LinkedIn public signals + Adzuna posting velocity. Hover any flow to isolate the source→destination pair." data-region-latam="LATAM cross-border moves are sparse and heavily offshore. The confirmed-move count is curated from LinkedIn public signals — Adzuna does not index most LATAM CFD hires. Treat width as directional, not measured.">Senior CFD / brokerage executive moves across EU+UK. Left nodes are source jurisdictions (grouped by regulator); right nodes are EU+UK firms receiving the talent. Link width = QTD confirmed moves sourced from LinkedIn public signals + Adzuna posting velocity. Hover any flow to isolate the source→destination pair.</div>
+        </div>
+        <div class="view-head__right">
+          <button class="chip is-on">QTD</button>
+          <button class="chip">YTD</button>
+          <button class="chip">12M</button>
+          <button class="chip">Export</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="lbl">Confirmed Moves · QTD</div>
+          <div class="val" data-region-eu="48" data-region-latam="9">48</div>
+          <div class="delta up"><span class="arr">▲</span> editorial curation</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Top Source Corridor</div>
+          <div class="val" style="font-size:18px" data-region-eu="UK (FCA) → DE" data-region-latam="MX (CNBV) → BR">UK (FCA) → DE</div>
+          <div class="delta up"><span class="arr">▲</span> <span data-region-eu="31.3% of flow" data-region-latam="33.3% of flow">31.3% of flow</span></div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">C-Suite / MD Bands</div>
+          <div class="val" data-region-eu="14" data-region-latam="3">14<span class="unit">moves</span></div>
+          <div class="delta up"><span class="arr">▲</span> +4 vs. Q1</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Retention · 12M</div>
+          <div class="val" data-region-eu="84.7" data-region-latam="79.1">84.7<span class="unit">%</span></div>
+          <div class="delta down"><span class="arr">▼</span> −1.2 pp vs. 2025</div>
+        </div>
+      </div>
+
+      <!-- Sankey -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card__hd">
+          <h3>Talent Corridor Sankey — Source → Receiving Firm</h3>
+          <span class="tag">QTD · confirmed moves</span>
+        </div>
+        <div class="card__bd">
+          <div class="sankey-wrap">
+            <svg class="sankey-svg" viewBox="0 0 1000 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Talent corridor Sankey diagram">
+              <defs>
+                <linearGradient id="g-uk"   x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"  stop-color="oklch(0.78 0.14 30)" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="oklch(0.78 0.14 30)" stop-opacity="0.35"/>
+                </linearGradient>
+                <linearGradient id="g-cy"   x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"  stop-color="oklch(0.80 0.14 75)" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="oklch(0.80 0.14 75)" stop-opacity="0.35"/>
+                </linearGradient>
+                <linearGradient id="g-ap"   x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"  stop-color="oklch(0.76 0.11 210)" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="oklch(0.76 0.11 210)" stop-opacity="0.35"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Left (source) nodes -->
+              <g class="snode" data-src="uk">
+                <rect x="60" y="40"  width="10" height="90" fill="oklch(0.78 0.14 30)"/>
+                <text class="label" x="80" y="62">United Kingdom</text>
+                <text class="sub"   x="80" y="80">FCA · London</text>
+                <text class="count" x="80" y="122">24 moves · 50.0%</text>
+              </g>
+              <g class="snode" data-src="cy">
+                <rect x="60" y="170" width="10" height="65" fill="oklch(0.80 0.14 75)"/>
+                <text class="label" x="80" y="192">Cyprus</text>
+                <text class="sub"   x="80" y="210">CySEC · Limassol</text>
+                <text class="count" x="80" y="232">14 moves · 29.2%</text>
+              </g>
+              <g class="snode" data-src="ap">
+                <rect x="60" y="270" width="10" height="50" fill="oklch(0.76 0.11 210)"/>
+                <text class="label" x="80" y="292">Offshore</text>
+                <text class="sub"   x="80" y="310">MAS · ASIC · MFSA</text>
+                <text class="count" x="80" y="332">10 moves · 20.8%</text>
+              </g>
+
+              <!-- Right (destination) nodes -->
+              <g class="snode" data-dst="etoro">
+                <rect x="930" y="40"  width="10" height="70" fill="var(--fg-0)"/>
+                <text class="label" x="920" y="62"  text-anchor="end">XTB Group</text>
+                <text class="sub"   x="920" y="80"  text-anchor="end">PL · EU passport</text>
+                <text class="count" x="920" y="102" text-anchor="end">14 hires</text>
+              </g>
+              <g class="snode" data-dst="adss">
+                <rect x="930" y="140" width="10" height="58" fill="var(--fg-0)"/>
+                <text class="label" x="920" y="162" text-anchor="end">Swissquote</text>
+                <text class="sub"   x="920" y="180" text-anchor="end">CH · multi-asset bank</text>
+                <text class="count" x="920" y="202" text-anchor="end">11 hires</text>
+              </g>
+              <g class="snode" data-dst="vt">
+                <rect x="930" y="220" width="10" height="46" fill="var(--fg-0)"/>
+                <text class="label" x="920" y="242" text-anchor="end">Saxo Bank</text>
+                <text class="sub"   x="920" y="260" text-anchor="end">DK · platform / B2B</text>
+                <text class="count" x="920" y="282" text-anchor="end">9 hires</text>
+              </g>
+              <g class="snode" data-dst="pep">
+                <rect x="930" y="290" width="10" height="38" fill="var(--fg-0)"/>
+                <text class="label" x="920" y="312" text-anchor="end">IG Group</text>
+                <text class="sub"   x="920" y="330" text-anchor="end">UK · retail CFD</text>
+                <text class="count" x="920" y="352" text-anchor="end">8 hires</text>
+              </g>
+              <g class="snode" data-dst="exn">
+                <rect x="930" y="350" width="10" height="28" fill="var(--fg-0)"/>
+                <text class="label" x="920" y="372" text-anchor="end">Pepperstone UK</text>
+                <text class="sub"   x="920" y="390" text-anchor="end">UK · retail CFD</text>
+                <text class="count" x="920" y="408" text-anchor="end">6 hires</text>
+              </g>
+
+              <!-- Links: path d uses cubic curve. stroke-width = flow volume -->
+              <!-- UK → XTB (7) -->
+              <path class="slink" data-src="uk" data-dst="etoro" d="M 70 70 C 500 70, 500 70, 930 70"  stroke="url(#g-uk)" stroke-width="12"/>
+              <!-- UK → Swissquote (6) -->
+              <path class="slink" data-src="uk" data-dst="adss" d="M 70 88 C 500 88, 500 160, 930 160" stroke="url(#g-uk)" stroke-width="10"/>
+              <!-- UK → Saxo (5) -->
+              <path class="slink" data-src="uk" data-dst="vt"   d="M 70 104 C 500 104, 500 240, 930 240" stroke="url(#g-uk)" stroke-width="8"/>
+              <!-- UK → IG (4) -->
+              <path class="slink" data-src="uk" data-dst="pep"  d="M 70 118 C 500 118, 500 308, 930 308" stroke="url(#g-uk)" stroke-width="6"/>
+              <!-- UK → Pepperstone (2) -->
+              <path class="slink" data-src="uk" data-dst="exn"  d="M 70 130 C 500 130, 500 362, 930 362" stroke="url(#g-uk)" stroke-width="4"/>
+
+              <!-- CY → XTB (5) -->
+              <path class="slink" data-src="cy" data-dst="etoro" d="M 70 184 C 500 184, 500 92,  930 92"  stroke="url(#g-cy)" stroke-width="8"/>
+              <!-- CY → Swissquote (3) -->
+              <path class="slink" data-src="cy" data-dst="adss"  d="M 70 200 C 500 200, 500 176, 930 176" stroke="url(#g-cy)" stroke-width="6"/>
+              <!-- CY → Saxo (3) -->
+              <path class="slink" data-src="cy" data-dst="vt"    d="M 70 214 C 500 214, 500 252, 930 252" stroke="url(#g-cy)" stroke-width="5"/>
+              <!-- CY → IG (3) -->
+              <path class="slink" data-src="cy" data-dst="pep"   d="M 70 228 C 500 228, 500 320, 930 320" stroke="url(#g-cy)" stroke-width="5"/>
+
+              <!-- AP → Swissquote (2) -->
+              <path class="slink" data-src="ap" data-dst="adss"  d="M 70 282 C 500 282, 500 188, 930 188" stroke="url(#g-ap)" stroke-width="4"/>
+              <!-- AP → XTB (2) -->
+              <path class="slink" data-src="ap" data-dst="etoro" d="M 70 292 C 500 292, 500 108, 930 108" stroke="url(#g-ap)" stroke-width="4"/>
+              <!-- AP → Saxo (2) -->
+              <path class="slink" data-src="ap" data-dst="vt"    d="M 70 304 C 500 304, 500 264, 930 264" stroke="url(#g-ap)" stroke-width="4"/>
+              <!-- AP → Pepperstone (4) -->
+              <path class="slink" data-src="ap" data-dst="exn"   d="M 70 316 C 500 316, 500 376, 930 376" stroke="url(#g-ap)" stroke-width="6"/>
+            </svg>
+
+            <div class="slegend">
+              <span><span class="swatch" style="background:oklch(0.78 0.14 30)"></span>UK · FCA-dominated</span>
+              <span><span class="swatch" style="background:oklch(0.80 0.14 75)"></span>Cyprus · CySEC outflow</span>
+              <span><span class="swatch" style="background:oklch(0.76 0.11 210)"></span>Offshore · MAS/ASIC/MFSA</span>
+              <span style="margin-left:auto">Hover flow to highlight · Width = move count</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Executive Alerts -->
+      <div class="card">
+        <div class="card__hd">
+          <h3>Key Executive Alerts — High-Impact Departures &amp; Hires</h3>
+          <span class="tag">2 new · last 7 days</span>
+        </div>
+        <div class="card__bd" style="padding:0; overflow-x:auto">
+          <table class="alerts">
+            <thead>
+              <tr>
+                <th class="alert-sev" style="width:4px"></th>
+                <th style="width:30%">Name &amp; Title</th>
+                <th style="width:22%">Departed From</th>
+                <th style="width:4%"></th>
+                <th style="width:22%" data-region-eu="Joined (EU+UK)" data-region-latam="Joined (LATAM)">Joined (EU+UK)</th>
+                <th>Strategic Impact</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="sev-high">
+                <td class="alert-sev"></td>
+                <td>
+                  <div class="exec">
+                    <div class="exec__av">
+                      <div class="exec__photo">DR</div>
+                      <div>
+                        <div class="exec__n">Daniel Roth</div>
+                        <div class="exec__t">Ex · Head of Institutional Sales · DACH</div>
+                      </div>
+                    </div>
+                    <span class="exec__tag">Priority · Sev 1</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="firm">
+                    <div class="firm__name">IG Markets Germany</div>
+                    <div class="firm__meta">Düsseldorf · BaFin · Retail CFD</div>
+                    <div class="firm__tenure">Tenure 9y · Resigned 2026-04-11</div>
+                  </div>
+                </td>
+                <td class="arrow-col">→</td>
+                <td>
+                  <div class="firm">
+                    <div class="firm__name">XTB Germany</div>
+                    <div class="firm__meta">Berlin · KNF passport · Retail CFD</div>
+                    <div class="firm__tenure">Title · MD, Head of DACH Sales</div>
+                  </div>
+                </td>
+                <td class="impact">
+                  <div class="imp-tag">CHRO Read</div>
+                  Roth owned IG's DACH B2B2C franchise and is rumoured to be lifting <b>~4 senior RMs</b> to XTB's Berlin expansion. XTB is leveraging its <b>KNF passport</b> to run a retail + IB push into Germany at a pay structure ~15% above IG's current scheme. Implication: <b>our Berlin lead pipeline will compress 2 quarters earlier</b> than planned; adjust our DACH BD offer bands now.
+                </td>
+              </tr>
+
+              <tr class="sev-elevated">
+                <td class="alert-sev"></td>
+                <td>
+                  <div class="exec">
+                    <div class="exec__av">
+                      <div class="exec__photo">AK</div>
+                      <div>
+                        <div class="exec__n">Anna Kowalski</div>
+                        <div class="exec__t">Ex · Chief Compliance Officer</div>
+                      </div>
+                    </div>
+                    <span class="exec__tag">Elevated · Sev 2</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="firm">
+                    <div class="firm__name">Plus500CY</div>
+                    <div class="firm__meta">Limassol · CySEC · Retail CFD</div>
+                    <div class="firm__tenure">Tenure 6y · Resigned 2026-04-15</div>
+                  </div>
+                </td>
+                <td class="arrow-col">→</td>
+                <td>
+                  <div class="firm">
+                    <div class="firm__name">Swissquote</div>
+                    <div class="firm__meta">Gland · FINMA banking license</div>
+                    <div class="firm__tenure">Title · Head of Group Compliance · CEE</div>
+                  </div>
+                </td>
+                <td class="impact">
+                  <div class="imp-tag">CHRO Read</div>
+                  A top-tier CySEC CCO moving into FINMA territory is the classic <b>CySEC → Swiss bank upgrade path</b>. Kowalski brings a full <b>MiFID II + CEE passporting playbook</b>, accelerating Swissquote's retail-bank cross-sell into Poland and Hungary. Implication: EU Compliance pay floors will re-anchor <b>+18–22%</b>; our Warsaw + Zurich offers need refresh by <b>Q3 2026</b>.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Supporting strip -->
+      <div class="grid cols-2" style="margin-top:16px">
+        <div class="card">
+          <div class="card__hd"><h3>Weekly Inflow Volume</h3><span class="tag">placeholder</span></div>
+          <div class="card__bd"><div class="plot plot--sm"><div class="plot__label">[ area chart — weekly confirmed moves ]</div></div></div>
+        </div>
+        <div class="card">
+          <div class="card__hd"><h3>Function Mix — Inbound</h3><span class="tag">placeholder</span></div>
+          <div class="card__bd"><div class="plot plot--sm"><div class="plot__label">[ donut — Inst Sales · Compliance · Risk · Product · Ops ]</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---- VIEW 3: Salary Index ---- -->
+    <section class="view" data-view="salary">
+      <div class="view-head">
+        <div class="view-head__left">
+          <div class="eyebrow" data-region-eu="03 · Salary Index · GBP Premium" data-region-latam="03 · Salary Index · BRL / MXN Premium">03 · Salary Index · GBP Premium</div>
+          <h1 data-region-eu="GBP Salary Premium Matrix — General vs. Qualified Roles" data-region-latam="BRL Salary Premium Matrix — General vs. Qualified Roles">GBP Salary Premium Matrix — General vs. Qualified Roles</h1>
+          <div class="desc" data-region-eu="Across EU+UK retail CFD, the pay gap separates generalists from those with <b>FCA / BaFin license credentials, CEE-language fluency or institutional FX books</b>. Bars below show <b>annual GBP P25–P75 ranges</b>: grey = general-market rate, amber = premium for qualified / regulated profiles (FCA SMF-16/17, CF10/CF11, German or Polish native, HNW book)." data-region-latam="In LATAM online brokerage, the premium is narrower but concentrated on <b>CVM-registered compliance officers and Portuguese-native institutional salespeople</b>. Bars show <b>annual BRL P25–P75 ranges</b>. Data density is thin — treat as directional.">Across EU+UK retail CFD, the pay gap separates generalists from those with <b>FCA / BaFin license credentials, CEE-language fluency or institutional FX books</b>. Bars below show <b>annual GBP P25–P75 ranges</b>: grey = general-market rate, amber = premium for qualified / regulated profiles (FCA SMF-16/17, CF10/CF11, German or Polish native, HNW book).</div>
+        </div>
+        <div class="view-head__right">
+          <button class="chip is-on" data-region-eu="GBP / yr" data-region-latam="BRL / yr">GBP / yr</button>
+          <button class="chip">USD / yr</button>
+          <button class="chip">Net · post-tax</button>
+          <button class="chip">Export</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="lbl">Median Premium · Qualified vs. General</div>
+          <div class="val" data-region-eu="+94" data-region-latam="+68">+94<span class="unit">%</span></div>
+          <div class="delta up"><span class="arr">▲</span> +11pp YoY</div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Highest Premium Role</div>
+          <div class="val" style="font-size:16px" data-region-eu="Compliance · FCA SMF" data-region-latam="Compliance · CVM">Compliance · FCA SMF</div>
+          <div class="delta up"><span class="arr">▲</span> <span data-region-eu="+112% vs. paralegal" data-region-latam="+88% vs. paralegal">+112% vs. paralegal</span></div>
+        </div>
+        <div class="kpi">
+          <div class="lbl" data-region-eu="Language Uplift" data-region-latam="Language Uplift">Language Uplift</div>
+          <div class="val" data-region-eu="+58" data-region-latam="+44">+58<span class="unit">%</span></div>
+          <div class="delta up"><span class="arr">▲</span> <span data-region-eu="DE / PL native" data-region-latam="PT native">DE / PL native</span></div>
+        </div>
+        <div class="kpi">
+          <div class="lbl">Open Urgent Reqs · 7d</div>
+          <div class="val" data-region-eu="14" data-region-latam="2">14<span class="unit">roles</span></div>
+          <div class="delta up"><span class="arr">▲</span> +3 WoW</div>
+        </div>
+      </div>
+
+      <!-- Range chart -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card__hd">
+          <h3 data-region-eu="Salary Range × Qualification Premium — GBP k / year (P25–P75)" data-region-latam="Salary Range × Qualification Premium — BRL k / year (P25–P75)">Salary Range × Qualification Premium — GBP k / year (P25–P75)</h3>
+          <span class="tag" data-region-eu="EU+UK CFD · 2026 Q2 compiled" data-region-latam="LATAM broker · 2026 Q2 compiled">EU+UK CFD · 2026 Q2 compiled</span>
+        </div>
+        <div class="card__bd" style="padding:0">
+          <div class="rchart">
+            <!-- Axis: 20k→260k GBP/yr for EU ; 60k→800k BRL/yr for LATAM (JS swaps) -->
+            <div class="rchart__axis">
+              <div>Role · Function</div>
+              <div class="ascale" id="salaryAxis" data-region-eu="20k|80k|140k|200k|260k" data-region-latam="60k|260k|460k|660k|800k">
+                <span style="left:0%">20k</span>
+                <span style="left:25%">80k</span>
+                <span style="left:50%">140k</span>
+                <span style="left:75%">200k</span>
+                <span style="left:100%">260k</span>
+                <div class="atick">
+                  <i style="left:0%"></i><i style="left:25%"></i><i style="left:50%"></i><i style="left:75%"></i><i style="left:100%"></i>
+                </div>
+              </div>
+              <div style="text-align:right">Premium Gap</div>
+            </div>
+
+            <!-- Account Manager (retail sales) — positions preserved from MENA scale (20-180 → 20-260 via JS) -->
+            <div class="rrow">
+              <div class="rrow__role">
+                <div class="rn">Account Manager</div>
+                <div class="rm">RETAIL CFD · FRONTLINE</div>
+              </div>
+              <div class="rrow__plot">
+                <div class="rbar base" style="left:3.125%; width:9.375%">
+                  <span class="rbar__cap">35–55k</span>
+                </div>
+                <div class="rbar prem" style="left:15.625%; width:18.75%">
+                  <span class="rbar__cap">DE · 55–85k</span>
+                </div>
+              </div>
+              <div class="rrow__gap">
+                <div class="gpct">+55%</div>
+                <div class="glbl">German / Polish native</div>
+              </div>
+            </div>
+
+            <!-- Compliance Officer (FCA) -->
+            <div class="rrow is-hero">
+              <div class="rrow__role">
+                <div class="rn">Compliance Officer</div>
+                <div class="rm">FCA · SMF-16 / SMF-17</div>
+              </div>
+              <div class="rrow__plot">
+                <div class="rbar base" style="left:12.5%; width:12.5%">
+                  <span class="rbar__cap">60–85k</span>
+                </div>
+                <div class="rbar prem" style="left:34.375%; width:34.375%">
+                  <span class="rbar__cap inside">95–150k</span>
+                </div>
+              </div>
+              <div class="rrow__gap">
+                <div class="gpct">+112%</div>
+                <div class="glbl">SMF / ICARA owner</div>
+              </div>
+            </div>
+
+            <!-- Institutional Sales -->
+            <div class="rrow is-hero">
+              <div class="rrow__role">
+                <div class="rn">Institutional Sales</div>
+                <div class="rm">B2B · LIQUIDITY / PRIME</div>
+              </div>
+              <div class="rrow__plot">
+                <div class="rbar base" style="left:21.875%; width:18.75%">
+                  <span class="rbar__cap">75–110k</span>
+                </div>
+                <div class="rbar prem" style="left:56.25%; width:43.75%">
+                  <span class="rbar__cap inside">145–245k</span>
+                </div>
+              </div>
+              <div class="rrow__gap">
+                <div class="gpct">+118%</div>
+                <div class="glbl">Portable EU book</div>
+              </div>
+            </div>
+
+            <!-- Risk Analyst -->
+            <div class="rrow">
+              <div class="rrow__role">
+                <div class="rn">Risk Analyst</div>
+                <div class="rm">MARKET · COUNTERPARTY</div>
+              </div>
+              <div class="rrow__plot">
+                <div class="rbar base" style="left:9.375%; width:12.5%">
+                  <span class="rbar__cap">50–75k</span>
+                </div>
+                <div class="rbar prem" style="left:34.375%; width:28.125%">
+                  <span class="rbar__cap inside">90–135k</span>
+                </div>
+              </div>
+              <div class="rrow__gap">
+                <div class="gpct">+92%</div>
+                <div class="glbl">FRM · CFD book exp.</div>
+              </div>
+            </div>
+
+            <!-- Dealer -->
+            <div class="rrow">
+              <div class="rrow__role">
+                <div class="rn">Dealer · Trading Desk</div>
+                <div class="rm">EXECUTION · MARKET MAKING</div>
+              </div>
+              <div class="rrow__plot">
+                <div class="rbar base" style="left:6.25%; width:9.375%">
+                  <span class="rbar__cap">45–65k</span>
+                </div>
+                <div class="rbar prem" style="left:25%; width:21.875%">
+                  <span class="rbar__cap inside">85–130k</span>
+                </div>
+              </div>
+              <div class="rrow__gap">
+                <div class="gpct">+100%</div>
+                <div class="glbl">Prop-book P&amp;L exp.</div>
+              </div>
+            </div>
+
+            <!-- Marketing -->
+            <div class="rrow">
+              <div class="rrow__role">
+                <div class="rn">Marketing Manager</div>
+                <div class="rm">PERFORMANCE · CRM</div>
+              </div>
+              <div class="rrow__plot">
+                <div class="rbar base" style="left:6.25%; width:12.5%">
+                  <span class="rbar__cap">45–70k</span>
+                </div>
+                <div class="rbar prem" style="left:28.125%; width:28.125%">
+                  <span class="rbar__cap inside">80–125k</span>
+                </div>
+              </div>
+              <div class="rrow__gap">
+                <div class="gpct">+78%</div>
+                <div class="glbl">CFD-regulated growth</div>
+              </div>
+            </div>
+
+            <!-- Product -->
+            <div class="rrow is-hero">
+              <div class="rrow__role">
+                <div class="rn">Product Manager</div>
+                <div class="rm">BROKERAGE PLATFORM</div>
+              </div>
+              <div class="rrow__plot">
+                <div class="rbar base" style="left:15.625%; width:12.5%">
+                  <span class="rbar__cap">70–95k</span>
+                </div>
+                <div class="rbar prem" style="left:43.75%; width:37.5%">
+                  <span class="rbar__cap inside">120–190k</span>
+                </div>
+              </div>
+              <div class="rrow__gap">
+                <div class="gpct">+108%</div>
+                <div class="glbl">Multi-asset CFD PM</div>
+              </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="rlegend">
+              <span><span class="rsw base"></span>General role · market P25–P75</span>
+              <span><span class="rsw prem"></span>Qualified / specialized · premium P25–P75</span>
+              <span style="margin-left:auto" data-region-eu="Source · Adzuna UK/DE/PL/CH + LinkedIn cross-check · n≈210 postings" data-region-latam="Source · Adzuna BR/MX + Catho · n≈40 postings (thin)">Source · Adzuna UK/DE/PL/CH + LinkedIn cross-check · n≈210 postings</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kanban: Urgent Reqs -->
+      <div class="card">
+        <div class="card__hd">
+          <h3 data-region-eu="Competitor Urgent Reqs — This Week" data-region-latam="Competitor Urgent Reqs — LATAM">Competitor Urgent Reqs — This Week</h3>
+          <span class="tag" data-region-eu="LIVE · Adzuna EU+UK crawl · weekly" data-region-latam="LIVE · Adzuna BR/MX · weekly (thin)">LIVE · Adzuna EU+UK crawl · weekly</span>
+        </div>
+        <div class="card__bd" style="padding:0">
+          <div class="kanban">
+            <!-- Column 1: Sales / BD -->
+            <div class="kcol">
+              <div class="kcol__hd">
+                <div>
+                  <div class="kt">Sales / BD</div>
+                  <div class="ksub" data-region-eu="B2B · IB / Prime · Retail" data-region-latam="B2B · Corretora · Casas de Bolsa">B2B · IB / Prime · Retail</div>
+                </div>
+                <div class="kcount" data-region-eu="10 open" data-region-latam="1 open">10 open</div>
+              </div>
+              <div class="kcol__bd">
+
+                <div class="kjob is-hot">
+                  <div class="kjob__row">
+                    <div class="kjob__co">XTB (PL HQ)</div>
+                    <div class="kjob__age new">2d new</div>
+                  </div>
+                  <div class="kjob__title">MD, Head of DACH Sales — Berlin desk</div>
+                  <div class="kjob__meta">
+                    <span>Warsaw · Berlin</span><span class="dot"></span>
+                    <span>EU passport</span><span class="dot"></span>
+                    <span>Backfill · D. Roth hire</span>
+                  </div>
+                  <div class="kjob__pay">PLN 78–415k<span class="pu">/ yr + variable</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag amber">DE native</span>
+                    <span class="kjob__tag">IB</span>
+                    <span class="kjob__tag">MiFID II</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna PL</b></span>
+                    <span>Posted 2026-04-22</span>
+                  </div>
+                </div>
+
+                <div class="kjob">
+                  <div class="kjob__row">
+                    <div class="kjob__co">IG Group</div>
+                    <div class="kjob__age new">4d new</div>
+                  </div>
+                  <div class="kjob__title">Senior Institutional Sales — Prime Services</div>
+                  <div class="kjob__meta">
+                    <span>London</span><span class="dot"></span>
+                    <span>Book required</span>
+                  </div>
+                  <div class="kjob__pay">GBP 95–145k<span class="pu">/ yr + bonus</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag amber">Prime</span>
+                    <span class="kjob__tag">FCA</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna UK</b></span>
+                    <span>Posted 2026-04-20</span>
+                  </div>
+                </div>
+
+                <div class="kjob">
+                  <div class="kjob__row">
+                    <div class="kjob__co">Swissquote</div>
+                    <div class="kjob__age">6d</div>
+                  </div>
+                  <div class="kjob__title">Senior B2B Relationship Manager — CEE</div>
+                  <div class="kjob__meta">
+                    <span>Gland</span><span class="dot"></span>
+                    <span>EN / DE / PL pref.</span>
+                  </div>
+                  <div class="kjob__pay">CHF 110–160k<span class="pu">/ yr</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag">Multi-asset</span>
+                    <span class="kjob__tag">FINMA</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna CH</b></span>
+                    <span>Posted 2026-04-18</span>
+                  </div>
+                </div>
+
+                <div class="kjob">
+                  <div class="kjob__row">
+                    <div class="kjob__co">Actinver</div>
+                    <div class="kjob__age">6d</div>
+                  </div>
+                  <div class="kjob__title">Ejecutivo de Cuenta — Casa de Bolsa</div>
+                  <div class="kjob__meta">
+                    <span>CDMX</span><span class="dot"></span>
+                    <span>ES native</span>
+                  </div>
+                  <div class="kjob__pay">MXN 7.2–9.6k<span class="pu">/ month</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag amber">CNBV</span>
+                    <span class="kjob__tag">LATAM</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna MX</b></span>
+                    <span>Posted 2026-04-18</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Column 2: Compliance / Risk -->
+            <div class="kcol">
+              <div class="kcol__hd">
+                <div>
+                  <div class="kt">Compliance / Risk</div>
+                  <div class="ksub" data-region-eu="FCA · BaFin · KNF · FINMA license bench" data-region-latam="CVM · CNBV license bench">FCA · BaFin · KNF · FINMA license bench</div>
+                </div>
+                <div class="kcount" data-region-eu="11 open" data-region-latam="1 open">11 open</div>
+              </div>
+              <div class="kcol__bd">
+
+                <div class="kjob is-hot">
+                  <div class="kjob__row">
+                    <div class="kjob__co">Swissquote</div>
+                    <div class="kjob__age new">1d new</div>
+                  </div>
+                  <div class="kjob__title">Head of Group Compliance — CEE Desk</div>
+                  <div class="kjob__meta">
+                    <span>Gland</span><span class="dot"></span>
+                    <span>Under A. Kowalski</span>
+                  </div>
+                  <div class="kjob__pay">CHF 160–230k<span class="pu">/ yr</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag amber">FINMA</span>
+                    <span class="kjob__tag">MiFID II</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna CH</b></span>
+                    <span>Posted 2026-04-23</span>
+                  </div>
+                </div>
+
+                <div class="kjob is-hot">
+                  <div class="kjob__row">
+                    <div class="kjob__co">IG Group</div>
+                    <div class="kjob__age new">3d new</div>
+                  </div>
+                  <div class="kjob__title">Senior Compliance Manager — SMCR refresh</div>
+                  <div class="kjob__meta">
+                    <span>London</span><span class="dot"></span>
+                    <span>SMF-16 / SMF-17 eligible</span>
+                  </div>
+                  <div class="kjob__pay">GBP 85–120k<span class="pu">/ yr</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag amber">FCA SMF</span>
+                    <span class="kjob__tag">ICARA</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna UK</b></span>
+                    <span>Posted 2026-04-21</span>
+                  </div>
+                </div>
+
+                <div class="kjob">
+                  <div class="kjob__row">
+                    <div class="kjob__co">XTB (PL HQ)</div>
+                    <div class="kjob__age">5d</div>
+                  </div>
+                  <div class="kjob__title">AML Officer — Regulatory Reporting</div>
+                  <div class="kjob__meta">
+                    <span>Warsaw</span><span class="dot"></span>
+                    <span>KNF filings</span>
+                  </div>
+                  <div class="kjob__pay">PLN 180–260k<span class="pu">/ yr</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag amber">KNF</span>
+                    <span class="kjob__tag">AMLA</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna PL</b></span>
+                    <span>Posted 2026-04-19</span>
+                  </div>
+                </div>
+
+                <div class="kjob">
+                  <div class="kjob__row">
+                    <div class="kjob__co">BTG Pactual</div>
+                    <div class="kjob__age">6d</div>
+                  </div>
+                  <div class="kjob__title">Compliance Officer — CVM Filings</div>
+                  <div class="kjob__meta">
+                    <span>São Paulo</span><span class="dot"></span>
+                    <span>PT native</span>
+                  </div>
+                  <div class="kjob__pay">BRL 180–280k<span class="pu">/ yr</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag amber">CVM</span>
+                    <span class="kjob__tag">LATAM</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna BR</b></span>
+                    <span>Posted 2026-04-18</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Column 3: Marketing -->
+            <div class="kcol">
+              <div class="kcol__hd">
+                <div>
+                  <div class="kt">Marketing</div>
+                  <div class="ksub" data-region-eu="CRO · CEE growth · Brand" data-region-latam="Growth · PT · ES">CRO · CEE growth · Brand</div>
+                </div>
+                <div class="kcount" data-region-eu="8 open" data-region-latam="0 open">8 open</div>
+              </div>
+              <div class="kcol__bd">
+
+                <div class="kjob is-hot">
+                  <div class="kjob__row">
+                    <div class="kjob__co">IG Group</div>
+                    <div class="kjob__age new">2d new</div>
+                  </div>
+                  <div class="kjob__title">Head of Brand — UK &amp; IE</div>
+                  <div class="kjob__meta">
+                    <span>London</span><span class="dot"></span>
+                    <span>Reports to Group CMO</span>
+                  </div>
+                  <div class="kjob__pay">GBP 95–135k<span class="pu">/ yr</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag amber">Brand</span>
+                    <span class="kjob__tag">CRO</span>
+                    <span class="kjob__tag">FCA ad rules</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna UK</b></span>
+                    <span>Posted 2026-04-22</span>
+                  </div>
+                </div>
+
+                <div class="kjob is-hot">
+                  <div class="kjob__row">
+                    <div class="kjob__co">XTB (PL HQ)</div>
+                    <div class="kjob__age new">4d new</div>
+                  </div>
+                  <div class="kjob__title">Content &amp; Growth Lead — DACH expansion</div>
+                  <div class="kjob__meta">
+                    <span>Warsaw · remote DE</span><span class="dot"></span>
+                    <span>BaFin-compliant collateral</span>
+                  </div>
+                  <div class="kjob__pay">PLN 220–310k<span class="pu">/ yr</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag amber">DE native</span>
+                    <span class="kjob__tag">Growth</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna PL</b></span>
+                    <span>Posted 2026-04-20</span>
+                  </div>
+                </div>
+
+                <div class="kjob">
+                  <div class="kjob__row">
+                    <div class="kjob__co">Plus500 UK</div>
+                    <div class="kjob__age">5d</div>
+                  </div>
+                  <div class="kjob__title">Performance Marketing Manager — Paid Social</div>
+                  <div class="kjob__meta">
+                    <span>London</span><span class="dot"></span>
+                    <span>Google Ads / Meta</span>
+                  </div>
+                  <div class="kjob__pay">GBP 70–95k<span class="pu">/ yr</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag">Growth</span>
+                    <span class="kjob__tag">Paid</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna UK</b></span>
+                    <span>Posted 2026-04-18</span>
+                  </div>
+                </div>
+
+                <div class="kjob">
+                  <div class="kjob__row">
+                    <div class="kjob__co">Swissquote</div>
+                    <div class="kjob__age">7d</div>
+                  </div>
+                  <div class="kjob__title">CRM / Retention Lead — Retail Trading</div>
+                  <div class="kjob__meta">
+                    <span>Gland</span><span class="dot"></span>
+                    <span>EN / DE / FR</span>
+                  </div>
+                  <div class="kjob__pay">CHF 120–170k<span class="pu">/ yr</span></div>
+                  <div class="kjob__tags">
+                    <span class="kjob__tag amber">CRM</span>
+                    <span class="kjob__tag">Retention</span>
+                  </div>
+                  <div class="kjob__src">
+                    <span>Source · <b>Adzuna CH</b></span>
+                    <span>Posted 2026-04-16</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
+</div>
 
-  <footer class="ft">
-    Weekly refresh via GitHub Actions · Data © <a href="https://www.adzuna.com" style="color:var(--fg-2)">Adzuna</a> · Source code on GitHub
-  </footer>
+<!-- Tooltip (portal) -->
+<div class="tt" id="tooltip" role="tooltip" aria-hidden="true">
+  <div class="tt__tag" id="tt-tag">Strategic Read</div>
+  <div class="tt__title" id="tt-title">—</div>
+  <div class="tt__body" id="tt-body">—</div>
+  <div class="tt__foot">
+    <span>License signal · <b id="tt-license">—</b></span>
+    <span>Open roles · <b id="tt-count">—</b></span>
+  </div>
 </div>
 
 <script>
-(function () {
-  "use strict";
+  /* ===== Region switching =====
+     The page is authored with EU+UK as the baseline (default is-on tab).
+     Elements that should change per region carry `data-region-eu` / `data-region-latam`
+     attributes; clicking a tab walks the DOM and swaps the visible text.
+     The data pipeline also re-fetches either eu_data.json or latam_data.json. */
+  var CURRENT_REGION = 'eu';
 
-  const DATA_PATHS = {
-    eu:    "data/eu_data.json",
-    latam: "data/latam_data.json",
-  };
-
-  // Country metadata for zone chips.
-  const ZONE_META = {
-    UK: { flag: "🇬🇧", label: "FCA · London" },
-    DE: { flag: "🇩🇪", label: "BaFin · Frankfurt" },
-    PL: { flag: "🇵🇱", label: "KNF · Warsaw" },
-    CH: { flag: "🇨🇭", label: "FINMA · Zurich" },
-    NL: { flag: "🇳🇱", label: "AFM · Amsterdam" },
-    FR: { flag: "🇫🇷", label: "AMF · Paris" },
-    IT: { flag: "🇮🇹", label: "CONSOB · Milan" },
-    ES: { flag: "🇪🇸", label: "CNMV · Madrid" },
-    BE: { flag: "🇧🇪", label: "FSMA · Brussels" },
-    AT: { flag: "🇦🇹", label: "FMA · Vienna" },
-    BR: { flag: "🇧🇷", label: "CVM · São Paulo" },
-    MX: { flag: "🇲🇽", label: "CNBV · Mexico City" },
-    CL: { flag: "🇨🇱", label: "CMF · Santiago" },
-  };
-
-  const BUCKETS = ["Sales / BD", "Compliance / Risk", "Marketing"];
-
-  const state = {
-    eu: null,
-    latam: null,
-    active: "eu",
-  };
-
-  // ---------- fetch ----------
-  async function loadAll() {
-    const [eu, latam] = await Promise.all([
-      fetchJson(DATA_PATHS.eu).catch(e => { console.warn("EU data missing", e); return null; }),
-      fetchJson(DATA_PATHS.latam).catch(e => { console.warn("LATAM data missing", e); return null; }),
-    ]);
-    state.eu = eu;
-    state.latam = latam;
-
-    updateTabCounts();
-    updateLastSync();
-    render(state.active);
-  }
-
-  async function fetchJson(path) {
-    const url = path + "?t=" + Date.now();
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP ${res.status} for ${path}`);
-    return res.json();
-  }
-
-  // ---------- derive ----------
-  function summarize(payload) {
-    if (!payload || !payload.records) {
-      return { total: 0, hotCos: 0, zones: [], byCompany: {} };
-    }
-    const byCompany = {};
-    const byZone = {};
-    let total = 0;
-    const hotCos = new Set();
-    for (const r of payload.records) {
-      total += r.count;
-      if (r.hot) hotCos.add(r.company);
-      byZone[r.zone] = (byZone[r.zone] || 0) + r.count;
-      if (!byCompany[r.company]) {
-        byCompany[r.company] = { zone: r.zone, total: 0, buckets: {} };
-      }
-      byCompany[r.company].total += r.count;
-      byCompany[r.company].buckets[r.function] = r;
-    }
-    const zones = Object.keys(byZone).sort().map(z => ({ code: z, count: byZone[z] }));
-    return { total, hotCos: hotCos.size, zones, byCompany };
-  }
-
-  // ---------- render ----------
-  function updateTabCounts() {
-    document.getElementById("euCount").textContent    = state.eu    ? state.eu.record_count    : "—";
-    document.getElementById("latamCount").textContent = state.latam ? state.latam.record_count : "—";
-  }
-
-  function updateLastSync() {
-    const latest = [state.eu, state.latam]
-      .filter(p => p && p.generated_at)
-      .map(p => p.generated_at)
-      .sort()
-      .pop();
-    if (!latest) return;
-    // Keep the raw ISO, trim seconds for readability.
-    const d = new Date(latest);
-    const s = d.toISOString().replace("T", " ").slice(0, 16) + " UTC";
-    document.getElementById("lastSync").textContent = "Last sync — " + s;
-  }
-
-  function render(region) {
-    const payload = state[region];
-    const main = document.getElementById("main");
-    if (!payload || payload.record_count === 0) {
-      main.innerHTML = renderEmpty(region, payload);
-      return;
-    }
-    const s = summarize(payload);
-    main.innerHTML = `
-      ${renderKpis(payload, s)}
-      ${renderZones(s)}
-      ${renderCompanies(s)}
-    `;
-    // Animate bars
-    requestAnimationFrame(() => {
-      document.querySelectorAll(".bar__fill[data-w]").forEach(el => {
-        el.style.width = el.dataset.w + "%";
-      });
+  function applyRegionText(region) {
+    var attrKey = 'region' + region.charAt(0).toUpperCase() + region.slice(1); // regionEu | regionLatam
+    var nodes = document.querySelectorAll('[data-region-' + region + ']');
+    nodes.forEach(function (n) {
+      var val = n.dataset[attrKey];
+      if (val == null) return;
+      n.textContent = val;
     });
-  }
-
-  function renderKpis(payload, s) {
-    const label = payload.region_label || payload.region || "—";
-    return `
-      <div class="kpis">
-        <div class="kpi">
-          <div class="kpi__lbl">Open Reqs · 30d</div>
-          <div class="kpi__val">${s.total}<small>jobs</small></div>
-          <div class="kpi__sub">${label} · ${s.zones.length} country${s.zones.length === 1 ? "" : "s"}</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi__lbl">Hot Competitors</div>
-          <div class="kpi__val">${s.hotCos}<small>/ ${Object.keys(s.byCompany).length}</small></div>
-          <div class="kpi__sub">&ge; 5 reqs in one bucket</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi__lbl">Coverage</div>
-          <div class="kpi__val">${Object.keys(s.byCompany).length}<small>firms</small></div>
-          <div class="kpi__sub">Tracked competitors</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi__lbl">Data Source</div>
-          <div class="kpi__val" style="font-size:15px;font-family:var(--mono);letter-spacing:0.08em;padding-top:8px">ADZUNA</div>
-          <div class="kpi__sub">${payload.source || "mock"} · weekly refresh</div>
-        </div>
-      </div>
-    `;
-  }
-
-  function renderZones(s) {
-    if (!s.zones.length) return "";
-    return `
-      <div class="zones">
-        ${s.zones.map(z => {
-          const meta = ZONE_META[z.code] || { flag: "", label: z.code };
-          return `
-            <div class="zone">
-              <span class="zone__flag">${meta.flag}</span>
-              <span class="zone__code">${z.code}</span>
-              <span class="zone__sub">${meta.label}</span>
-              <span class="zone__count">${z.count}</span>
-            </div>
-          `;
-        }).join("")}
-      </div>
-    `;
-  }
-
-  function renderCompanies(s) {
-    const companies = Object.keys(s.byCompany).sort((a, b) => s.byCompany[b].total - s.byCompany[a].total);
-    if (!companies.length) return "";
-    // max count in any single bucket across visible cards → scale bars
-    let max = 0;
-    for (const c of companies) {
-      for (const b of BUCKETS) {
-        const rec = s.byCompany[c].buckets[b];
-        if (rec && rec.count > max) max = rec.count;
+    // axis labels use pipe-separated list to avoid textContent on parent overwriting children
+    var axis = document.getElementById('salaryAxis');
+    if (axis) {
+      var spec = axis.dataset[attrKey];
+      if (spec) {
+        var ticks = spec.split('|');
+        var spans = axis.querySelectorAll(':scope > span');
+        spans.forEach(function (sp, i) { if (ticks[i]) sp.textContent = ticks[i]; });
       }
     }
-    max = Math.max(max, 3); // min scale so 1-2 counts don't fill 100%
-
-    return `
-      <div class="card">
-        <div class="card__hd">
-          <h3>Competitor Hiring · by Function</h3>
-          <span class="tag">3 buckets · Sales / Compliance / Marketing</span>
-        </div>
-        <div class="card__bd">
-          <div class="comp-grid">
-            ${companies.map(name => renderCompanyCard(name, s.byCompany[name], max)).join("")}
-          </div>
-        </div>
-      </div>
-    `;
   }
 
-  function renderCompanyCard(name, data, max) {
-    return `
-      <div class="comp">
-        <div class="comp__hd">
-          <div>
-            <div class="comp__name">${escapeHtml(name)}</div>
-            <div class="comp__zone" style="margin-top:4px;display:inline-block">${data.zone}</div>
-          </div>
-          <div class="comp__total">${data.total} open</div>
-        </div>
-        <div class="bars">
-          ${BUCKETS.map(b => renderBar(b, data.buckets[b], max)).join("")}
-        </div>
-      </div>
-    `;
-  }
+  /* ===== Data pipeline: fetch region-specific JSON and hydrate zone cards ===== */
+  (function bootstrap() {
+    // Metadata for the company logo box and subtitle. When the JSON returns a
+    // company not listed here, we fall back to a 2-letter initial and em-dash.
+    var COMPANY_META = {
+      /* EU + UK */
+      "IG Group":         { logo: "IG", meta: "London · retail CFD" },
+      "CMC Markets":      { logo: "CM", meta: "London · retail CFD" },
+      "Plus500 UK":       { logo: "P5", meta: "London · retail CFD" },
+      "Pepperstone UK":   { logo: "PP", meta: "London · retail CFD" },
+      "Trading 212":      { logo: "T2", meta: "London · neo-broker" },
+      "ActivTrades":      { logo: "AT", meta: "London · retail CFD" },
+      "OANDA UK":         { logo: "OA", meta: "London · FX / CFD" },
+      "XTB Germany":      { logo: "XT", meta: "Frankfurt · retail CFD" },
+      "JFD Brokers":      { logo: "JF", meta: "Cham · multi-asset" },
+      "XTB (PL HQ)":      { logo: "XT", meta: "Warsaw · retail CFD" },
+      "Saxo Bank":        { logo: "SX", meta: "Copenhagen · multi-asset" },
+      "Swissquote":       { logo: "SQ", meta: "Gland · multi-asset bank" },
+      "Dukascopy":        { logo: "DK", meta: "Geneva · retail FX · bank" },
+      /* LATAM */
+      "XP Investimentos": { logo: "XP", meta: "São Paulo · investment" },
+      "Avenue":           { logo: "AV", meta: "São Paulo · US stocks" },
+      "Rico":             { logo: "RC", meta: "São Paulo · retail" },
+      "BTG Pactual":      { logo: "BT", meta: "São Paulo · investment bank" },
+      "Modalmais":        { logo: "MD", meta: "Rio · retail broker" },
+      "Clear":            { logo: "CL", meta: "São Paulo · XP group" },
+      "GBM":              { logo: "GB", meta: "CDMX · casa de bolsa" },
+      "Actinver":         { logo: "AC", meta: "CDMX · casa de bolsa" },
+      "XTB LATAM":        { logo: "XT", meta: "Belize · retail CFD" },
+      "Capex.com":        { logo: "CP", meta: "CySEC · retail CFD" },
+    };
 
-  function renderBar(label, rec, max) {
-    const count = rec ? rec.count : 0;
-    const hot = rec && rec.hot;
-    const pct = Math.round((count / max) * 100);
-    return `
-      <div class="bar ${hot ? "is-hot" : ""}">
-        <div class="bar__lbl">
-          ${label}${hot ? ' <span class="hot-tag">Hot</span>' : ""}
-        </div>
-        <div class="bar__track">
-          <div class="bar__fill" data-w="${pct}" style="width:0"></div>
-        </div>
-        <div class="bar__n">${count}</div>
-      </div>
-    `;
-  }
-
-  function renderEmpty(region, payload) {
-    const label = region === "eu" ? "EU+UK" : "LATAM";
-    if (!payload) {
-      return `<div class="empty">No <b>${label}</b> data file found. Run <code>python talent_scraper.py --region ${region} --source adzuna</code> or wait for the weekly workflow.</div>`;
+    function zoneForRecord(rec) {
+      // EU baseline: UK = primary (amber) hub, all others = secondary (cyan) hub
+      if (CURRENT_REGION === 'eu') {
+        return rec.zone === 'UK' ? 'DIFC' : 'ADGM';
+      }
+      // LATAM: BR = primary (amber) hub, MX = secondary (cyan) hub
+      return rec.zone === 'BR' ? 'DIFC' : 'ADGM';
     }
-    return `
-      <div class="empty">
-        <b>${label}</b> returned <b>0</b> matching jobs this week.<br>
-        Last sync: ${payload.generated_at || "—"} · Source: ${payload.source || "—"}<br>
-        Check the workflow log — Adzuna may have had no matches for the tracked company aliases in the last 30 days.
-      </div>
-    `;
-  }
 
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, c =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  }
+    function dataUrlFor(region) {
+      return region === 'latam' ? './data/latam_data.json' : './data/eu_data.json';
+    }
 
-  // ---------- tabs ----------
-  document.querySelectorAll(".tab").forEach(t => {
-    t.addEventListener("click", () => {
-      const region = t.dataset.tab;
-      if (region === state.active) return;
-      document.querySelectorAll(".tab").forEach(x => x.classList.toggle("is-active", x === t));
-      state.active = region;
-      render(region);
+    function loadRegion(region) {
+      CURRENT_REGION = region;
+      applyRegionText(region);
+      fetch(dataUrlFor(region), { cache: 'no-store' })
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (data) { applyData(data); })
+        .catch(function (err) {
+          console.warn('[dashboard] data fetch failed for ' + region + ':', err.message);
+        });
+    }
+
+    function applyData(data) {
+      if (!data || !Array.isArray(data.records)) return;
+
+      // Group records by hub-palette (DIFC=primary, ADGM=secondary) -> company -> [records]
+      var grouped = { DIFC: {}, ADGM: {} };
+      data.records.forEach(function (rec) {
+        var hub = zoneForRecord(rec);
+        if (!grouped[hub][rec.company]) grouped[hub][rec.company] = [];
+        grouped[hub][rec.company].push(rec);
+      });
+
+      // For each hub, replace .comp-chart contents entirely with generated cards.
+      ['DIFC', 'ADGM'].forEach(function (hub) {
+        var zoneEl = document.querySelector('.zone--' + hub.toLowerCase());
+        if (!zoneEl) return;
+        var chart = zoneEl.querySelector('.comp-chart');
+        if (!chart) return;
+
+        var companies = Object.keys(grouped[hub]).map(function (name) {
+          var records = grouped[hub][name];
+          var total = records.reduce(function (a, r) { return a + (r.count || 0); }, 0);
+          return { name: name, records: records, total: total };
+        });
+        if (companies.length === 0) return; // keep static fallback cards
+        companies.sort(function (a, b) { return b.total - a.total; });
+
+        chart.innerHTML = '';
+        companies.forEach(function (c) {
+          chart.appendChild(buildCompanyCard(c.name, c.records, c.total));
+        });
+      });
+
+      // Footer record count
+      var rec = document.getElementById('footRecords');
+      if (rec) rec.textContent = String(data.record_count || data.records.length);
+
+      if (data.generated_at) {
+        var sync = document.getElementById('lastSync');
+        if (sync) {
+          sync.textContent = data.generated_at.replace('T', ' ').slice(0, 16) + ' UTC';
+          sync.dataset.hydrated = '1';
+        }
+      }
+
+      // Re-bind tooltip listeners because we regenerated the rows
+      bindBarTooltips();
+    }
+
+    function buildCompanyCard(name, records, total) {
+      var meta = COMPANY_META[name] || { logo: name.substring(0, 2).toUpperCase(), meta: '—' };
+      var maxCount = records.reduce(function (m, r) { return Math.max(m, r.count || 0); }, 0);
+      if (maxCount <= 0) maxCount = 1;
+      var sorted = records.slice().sort(function (a, b) { return (b.count || 0) - (a.count || 0); });
+
+      var comp = document.createElement('div');
+      comp.className = 'comp';
+
+      var head = document.createElement('div');
+      head.className = 'comp__head';
+      var logo = document.createElement('div');
+      logo.className = 'comp__logo';
+      var mark = document.createElement('div');
+      mark.className = 'comp__mark';
+      mark.textContent = meta.logo;
+      var nm = document.createElement('div');
+      nm.className = 'comp__name';
+      nm.textContent = name;
+      logo.appendChild(mark); logo.appendChild(nm);
+      var metaEl = document.createElement('div');
+      metaEl.className = 'comp__meta';
+      metaEl.textContent = meta.meta;
+      var totEl = document.createElement('div');
+      totEl.className = 'comp__total';
+      var b = document.createElement('b'); b.textContent = String(total);
+      totEl.appendChild(b);
+      totEl.appendChild(document.createTextNode(' open roles'));
+      head.appendChild(logo); head.appendChild(metaEl); head.appendChild(totEl);
+      comp.appendChild(head);
+
+      var bars = document.createElement('div');
+      bars.className = 'bars';
+      sorted.forEach(function (rec) {
+        bars.appendChild(buildBarRow(name, rec, maxCount));
+      });
+      comp.appendChild(bars);
+
+      return comp;
+    }
+
+    function buildBarRow(company, rec, maxCount) {
+      var row = document.createElement('div');
+      row.className = 'bars__row' + (rec.hot ? ' is-hot' : '');
+      row.dataset.comp = company;
+      row.dataset.func = rec.function;
+      row.dataset.count = String(rec.count || 0);
+      if (rec.license_stage) row.dataset.license = rec.license_stage;
+
+      var track = document.createElement('div');
+      track.className = 'bars__track';
+      var fill = document.createElement('div');
+      fill.className = 'bars__fill';
+      fill.style.width = Math.round(((rec.count || 0) / maxCount) * 100) + '%';
+      var label = document.createElement('div');
+      label.className = 'bars__label';
+      label.appendChild(document.createTextNode(rec.function));
+      if (rec.hot) {
+        label.appendChild(document.createTextNode(' '));
+        var chip = document.createElement('span');
+        chip.className = 'chtag'; chip.textContent = 'Hot';
+        label.appendChild(chip);
+      }
+      track.appendChild(fill); track.appendChild(label);
+
+      var num = document.createElement('div');
+      num.className = 'bars__num';
+      num.textContent = String(rec.count || 0);
+
+      row.appendChild(track); row.appendChild(num);
+      return row;
+    }
+
+    // Expose so outside handlers (region tabs) can re-trigger a fetch.
+    window.__dashboardLoadRegion = loadRegion;
+
+    // Initial load: EU is the authored baseline.
+    loadRegion('eu');
+  })();
+
+  // Sidebar nav switching
+  const buttons = document.querySelectorAll('.navbtn[data-view]');
+  const views   = document.querySelectorAll('.view[data-view]');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const v = btn.dataset.view;
+      buttons.forEach(b => b.classList.toggle('is-active', b === btn));
+      views.forEach(view => view.classList.toggle('is-on', view.dataset.view === v));
+      document.querySelector('.main').scrollTop = 0;
     });
   });
 
-  loadAll();
-})();
+  // Region tab switching — swaps data source + narrative text
+  document.querySelectorAll('.rtab__btn[data-region]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const r = btn.dataset.region;
+      document.querySelectorAll('.rtab__btn').forEach(b => {
+        b.classList.toggle('is-on', b === btn);
+        b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+      });
+      if (typeof window.__dashboardLoadRegion === 'function') {
+        window.__dashboardLoadRegion(r);
+      }
+      document.querySelector('.main').scrollTop = 0;
+    });
+  });
+
+  // Ticking "last sync"
+  function fmt(n){ return String(n).padStart(2,'0'); }
+  function tick() {
+    const el = document.getElementById('lastSync');
+    if (!el || el.dataset.hydrated === '1') return; // JSON owns the timestamp
+    const d = new Date();
+    const s = `${d.getFullYear()}-${fmt(d.getMonth()+1)}-${fmt(d.getDate())} ${fmt(d.getHours())}:${fmt(d.getMinutes())} UTC`;
+    el.textContent = s;
+  }
+  tick();
+  setInterval(tick, 30000);
+
+  /* ===== Bar-row tooltip for Hub Heatmap ===== */
+  const tt       = document.getElementById('tooltip');
+  const ttTag    = document.getElementById('tt-tag');
+  const ttTitle  = document.getElementById('tt-title');
+  const ttBody   = document.getElementById('tt-body');
+  const ttLic    = document.getElementById('tt-license');
+  const ttCnt    = document.getElementById('tt-count');
+
+  // Strategic-read copy per (region, hub, function). The VT Markets 3-bucket
+  // taxonomy is Sales/BD · Compliance/Risk · Marketing. Copy varies by region so
+  // a reader hovering on an XTB Compliance card gets EU-relevant analysis.
+  const STRAT_EU = {
+    'Sales / BD': {
+      title: 'EU Sales / BD — cross-border hunter signal',
+      body: '<b>{comp}</b> has opened <b>{count}</b> Sales / BD roles. For EU+UK brokers this typically means <b>passporting or regional desk scale-out</b> — hunting for language-native RMs to cover DACH, Iberia, or CEE. Combined with adjacent Compliance hiring this is the textbook pre-launch pattern ~10–14 weeks before a new market goes live.'
+    },
+    'Compliance / Risk': {
+      title: 'FCA / BaFin / KNF filing in flight',
+      body: 'Opening <b>{count}</b> Compliance / Risk seats at <b>{comp}</b> is the SMCR/ICARA pattern for UK firms, or AMLA / MiFID II refresh for EU-continental. Regulators require named Senior Managers to reside in-jurisdiction — so these postings lead license events by <b>8–16 weeks</b>.'
+    },
+    'Marketing': {
+      title: 'Brand / growth build — retail funnel pre-launch',
+      body: '<b>{comp}</b> scaling Marketing typically precedes a retail push. Watch for localised (DE / PL / CZ) content leads: they signal a BaFin- or KNF-approved creative pipeline is active, typically 3–6 months ahead of a regional brand campaign.'
+    }
+  };
+  const STRAT_LATAM = {
+    'Sales / BD': {
+      title: 'LATAM Sales / BD — narrow offshore signal',
+      body: 'Adzuna rarely indexes Brazilian CFD roles; a <b>{comp}</b> Sales post is usually a casa-de-bolsa / corretora front-office opening rather than a CFD role. Treat as directional. Cross-check LinkedIn BR / MX for the real picture.'
+    },
+    'Compliance / Risk': {
+      title: 'CVM / CNBV compliance expansion',
+      body: '<b>{comp}</b> posting Compliance seats in BR or MX typically relates to <b>CVM Resolution 160 filings</b> (Brazil) or <b>CNBV annual renewal</b> (Mexico). Both require on-shore, Portuguese-/Spanish-native officers — which is why pay floors in LATAM compliance run +60% vs. general legal.'
+    },
+    'Marketing': {
+      title: 'Brand / creator-economy growth',
+      body: 'LATAM broker marketing is shifting hard to <b>creator / influencer partnerships</b> as CVM tightens paid-ad rules. When <b>{comp}</b> posts Marketing roles, expect a heavy Portuguese-/Spanish-content + social focus.'
+    }
+  };
+  function stratFor(func) {
+    var table = CURRENT_REGION === 'latam' ? STRAT_LATAM : STRAT_EU;
+    return table[func] || null;
+  }
+
+  function hubNameForRow(row) {
+    var zoneEl = row.closest('.zone');
+    var isSecondary = zoneEl && zoneEl.classList.contains('zone--adgm');
+    if (CURRENT_REGION === 'latam') {
+      return isSecondary ? 'Mexico · Strategic Read' : 'Brazil · Strategic Read';
+    }
+    return isSecondary ? 'EU · Strategic Read' : 'UK · Strategic Read';
+  }
+
+  function showTip(row, evt) {
+    const func    = row.dataset.func;
+    const comp    = row.dataset.comp;
+    const count   = row.dataset.count || '—';
+    const license = row.dataset.license || '—';
+    const zoneEl  = row.closest('.zone');
+    const isAdgm  = zoneEl && zoneEl.classList.contains('zone--adgm');
+
+    const strat = stratFor(func) || {
+      title: func,
+      body: '<b>' + comp + '</b> currently has <b>' + count + '</b> open role' + (count === '1' ? '' : 's') + ' in this function.'
+    };
+
+    tt.classList.toggle('zone-adgm', !!isAdgm);
+    ttTag.textContent = hubNameForRow(row);
+    ttTitle.textContent = strat.title;
+    ttBody.innerHTML = strat.body.replace(/\{comp\}/g, comp).replace(/\{count\}/g, count);
+    ttLic.textContent = license;
+    ttCnt.textContent = count;
+
+    positionTip(evt);
+    tt.classList.add('is-on');
+    tt.setAttribute('aria-hidden', 'false');
+  }
+  function hideTip() {
+    tt.classList.remove('is-on');
+    tt.setAttribute('aria-hidden', 'true');
+  }
+  function positionTip(evt) {
+    const pad = 14;
+    const rect = tt.getBoundingClientRect();
+    const w = rect.width || 300;
+    const h = rect.height || 160;
+    let x = evt.clientX + pad;
+    let y = evt.clientY + pad;
+    if (x + w + pad > window.innerWidth)  x = evt.clientX - w - pad;
+    if (y + h + pad > window.innerHeight) y = evt.clientY - h - pad;
+    tt.style.left = Math.max(8, x) + 'px';
+    tt.style.top  = Math.max(8, y) + 'px';
+  }
+  // Bind to existing rows immediately (static fallback) and expose a rebinder
+  // for the JSON hydration pipeline to call after it regenerates the rows.
+  function bindBarTooltips() {
+    document.querySelectorAll('.bars__row').forEach(row => {
+      if (row.__boundTip) return;
+      row.__boundTip = true;
+      row.addEventListener('mouseenter', e => showTip(row, e));
+      row.addEventListener('mousemove',  e => positionTip(e));
+      row.addEventListener('mouseleave', hideTip);
+      row.addEventListener('focus',      e => showTip(row, { clientX: row.getBoundingClientRect().right, clientY: row.getBoundingClientRect().top }));
+      row.addEventListener('blur',       hideTip);
+      row.tabIndex = 0;
+    });
+  }
+  bindBarTooltips();
+  window.bindBarTooltips = bindBarTooltips;
+
+  /* ===== Sankey link hover highlighting ===== */
+  const links = document.querySelectorAll('.slink');
+  links.forEach(link => {
+    link.addEventListener('mouseenter', () => {
+      links.forEach(l => { if (l !== link) l.classList.add('dim'); });
+    });
+    link.addEventListener('mouseleave', () => {
+      links.forEach(l => l.classList.remove('dim'));
+    });
+  });
+  // Hovering a source node highlights its links
+  document.querySelectorAll('.snode[data-src]').forEach(n => {
+    n.addEventListener('mouseenter', () => {
+      const src = n.dataset.src;
+      links.forEach(l => l.classList.toggle('dim', l.dataset.src !== src));
+    });
+    n.addEventListener('mouseleave', () => links.forEach(l => l.classList.remove('dim')));
+  });
+  document.querySelectorAll('.snode[data-dst]').forEach(n => {
+    n.addEventListener('mouseenter', () => {
+      const dst = n.dataset.dst;
+      links.forEach(l => l.classList.toggle('dim', l.dataset.dst !== dst));
+    });
+    n.addEventListener('mouseleave', () => links.forEach(l => l.classList.remove('dim')));
+  });
 </script>
+
 </body>
 </html>
