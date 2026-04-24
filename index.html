@@ -1448,6 +1448,40 @@
     color: var(--fg-3);
     letter-spacing: 0.05em;
   }
+  /* LATAM thin-coverage notice — shown only when body.is-latam on views that lack LATAM-specific content */
+  .latam-notice {
+    display: none;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    margin: 0 0 18px 0;
+    background: linear-gradient(90deg, rgba(245,158,11,0.10), rgba(245,158,11,0.02));
+    border: 1px solid rgba(245,158,11,0.35);
+    border-left: 3px solid var(--amber);
+    border-radius: 8px;
+    color: var(--fg-1);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .latam-notice__tag {
+    flex: 0 0 auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--amber);
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid rgba(245,158,11,0.45);
+    border-radius: 4px;
+    background: rgba(245,158,11,0.08);
+    white-space: nowrap;
+  }
+  .latam-notice__body b { color: var(--fg-0); }
+  body.is-latam-mode .latam-notice { display: flex; }
+  body.is-latam-mode .view[data-view="flow"] .card,
+  body.is-latam-mode .view[data-view="salary"] .card { opacity: 0.55; filter: grayscale(0.15); }
+  body.is-latam-mode .view[data-view="flow"] .latam-notice,
+  body.is-latam-mode .view[data-view="salary"] .latam-notice { opacity: 1; filter: none; }
 </style>
 </head>
 <body>
@@ -1897,6 +1931,11 @@
         </div>
       </div>
 
+      <div class="latam-notice">
+        <span class="latam-notice__tag">LATAM · thin coverage</span>
+        <div class="latam-notice__body">Adzuna does not index most LATAM CFD hires — the Sankey below reflects <b>EU+UK flows</b> and is shown for reference only. For real LATAM talent movement signal, use the <b>Hub Heatmap</b> (2 live records) or cross-check LinkedIn BR / MX + Talenteca / OCC directly. Treat the visualisation below as <b>EU baseline, not LATAM fact</b>.</div>
+      </div>
+
       <div class="kpis">
         <div class="kpi">
           <div class="lbl">Confirmed Moves · QTD</div>
@@ -2157,6 +2196,11 @@
           <button class="chip">Net · post-tax</button>
           <button class="chip">Export</button>
         </div>
+      </div>
+
+      <div class="latam-notice">
+        <span class="latam-notice__tag">LATAM · thin coverage</span>
+        <div class="latam-notice__body">The salary matrix and Urgent Reqs kanban below are <b>EU+UK reference values</b>. Adzuna's LATAM sample (n≈2 postings) is too thin to anchor reliable BRL / MXN premium bands. For LATAM comp intelligence, pair Hub Heatmap with <b>Glassdoor BR / Catho / OCC México</b> and the Cyprus-based broker salary floors observed in your Rolodex. Do not quote the bars below as LATAM market rate.</div>
       </div>
 
       <div class="kpis">
@@ -2755,6 +2799,7 @@
 
     function loadRegion(region) {
       CURRENT_REGION = region;
+      document.body.classList.toggle('is-latam-mode', region === 'latam');
       applyRegionText(region);
       fetch(dataUrlFor(region), { cache: 'no-store' })
         .then(function (r) {
