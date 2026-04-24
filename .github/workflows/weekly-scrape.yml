@@ -1,0 +1,70 @@
+name: Weekly EU+LATAM scrape
+
+# Monday 08:30 Asia/Taipei = Monday 00:30 UTC. Weekly cadence to stay under
+# Adzuna Trial free-tier quota (1000 req/month).
+on:
+  schedule:
+    - cron: "30 0 * * 1"
+  workflow_dispatch: {}
+
+concurrency:
+  group: eu-latam-scrape
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: write
+
+    strategy:
+      matrix:
+        region: [eu, latam]
+      fail-fast: false
+      # Commit each region sequentially so the second region sees the first's
+      # commit and pushes cleanly.
+      max-parallel: 1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Pull latest main
+        run: git pull --rebase origin main
+
+      - name: Run scraper (adzuna · ${{ matrix.region }})
+        env:
+          ADZUNA_APP_ID:        ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY:       ${{ secrets.ADZUNA_APP_KEY }}
+          ADZUNA_MAX_DAYS_OLD:  "30"
+        run: |
+          python talent_scraper.py \
+            --source adzuna \
+            --region ${{ matrix.region }} \
+            --output data/${{ matrix.region }}_data.json \
+            --timeout 25 \
+            -v
+
+      - name: Show output summary
+        run: |
+          echo "--- ${{ matrix.region }} summary ---"
+          python -c "import json; p=json.load(open('data/${{ matrix.region }}_data.json')); print('record_count:', p.get('record_count')); print('generated_at:', p.get('generated_at'))"
+
+      - name: Commit refreshed data if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/${{ matrix.region }}_data.json
+          if git diff --cached --quiet; then
+            echo "no data change — skipping commit"
+          else
+            git commit -m "chore(data): ${{ matrix.region }} refresh $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi

@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-04-24T11:30:00+08:00",
+  "region": "eu",
+  "region_label": "EU+UK",
+  "source": "mock",
+  "record_count": 11,
+  "records": [
+    {"company": "CMC Markets",    "zone": "UK", "function": "Compliance / Risk", "count": 4, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "GBP", "country": "gb", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "CMC Markets",    "zone": "UK", "function": "Sales / BD",        "count": 3, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "GBP", "country": "gb", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "IG Group",       "zone": "UK", "function": "Sales / BD",        "count": 12, "hot": true, "salary_min": null, "salary_max": null, "salary_currency": "GBP", "country": "gb", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "IG Group",       "zone": "UK", "function": "Compliance / Risk", "count": 7, "hot": true, "salary_min": null, "salary_max": null, "salary_currency": "GBP", "country": "gb", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "IG Group",       "zone": "UK", "function": "Marketing",         "count": 3, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "GBP", "country": "gb", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "Pepperstone UK", "zone": "UK", "function": "Sales / BD",        "count": 5, "hot": true, "salary_min": null, "salary_max": null, "salary_currency": "GBP", "country": "gb", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "Plus500 UK",     "zone": "UK", "function": "Compliance / Risk", "count": 3, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "GBP", "country": "gb", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "XTB Germany",    "zone": "DE", "function": "Sales / BD",        "count": 2, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "EUR", "country": "de", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "XTB (PL HQ)",    "zone": "PL", "function": "Compliance / Risk", "count": 3, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "PLN", "country": "pl", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "Saxo Bank",      "zone": "NL", "function": "Compliance / Risk", "count": 4, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "EUR", "country": "nl", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "Swissquote",     "zone": "CH", "function": "Sales / BD",        "count": 2, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "CHF", "country": "ch", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"}
+  ]
+}

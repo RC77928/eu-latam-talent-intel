@@ -1,0 +1,21 @@
+# local runtime artifacts
+*.log
+*.tmp
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# editor / os
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# secrets — never commit
+.env
+.env.*
+!.env.example

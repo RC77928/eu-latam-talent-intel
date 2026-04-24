@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>EU+UK · LATAM Talent Mobility · VT Markets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-0: oklch(0.14 0.008 250);
+    --bg-1: oklch(0.18 0.009 250);
+    --bg-2: oklch(0.21 0.010 250);
+    --bg-3: oklch(0.25 0.011 250);
+    --line: oklch(0.30 0.010 250);
+    --line-soft: oklch(0.25 0.010 250);
+
+    --fg-0: oklch(0.97 0.005 250);
+    --fg-1: oklch(0.78 0.008 250);
+    --fg-2: oklch(0.58 0.010 250);
+    --fg-3: oklch(0.42 0.010 250);
+
+    --amber: oklch(0.80 0.14 75);
+    --amber-dim: oklch(0.80 0.14 75 / 0.15);
+    --cyan:  oklch(0.76 0.11 210);
+    --cyan-dim: oklch(0.76 0.11 210 / 0.15);
+    --pos:   oklch(0.78 0.13 150);
+    --neg:   oklch(0.70 0.18 25);
+
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body {
+    background: var(--bg-0);
+    color: var(--fg-0);
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    letter-spacing: -0.005em;
+  }
+
+  .app { display: flex; flex-direction: column; min-height: 100vh; }
+
+  /* Header */
+  .hd {
+    background: var(--bg-1);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center;
+    padding: 0 24px; gap: 20px; height: 56px;
+  }
+  .hd__mark {
+    width: 22px; height: 22px;
+    border: 1.5px solid var(--amber);
+    transform: rotate(45deg); position: relative;
+  }
+  .hd__mark::after {
+    content: ""; position: absolute; inset: 3px;
+    background: var(--amber); opacity: 0.6;
+  }
+  .hd__wm {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.18em; color: var(--fg-1); text-transform: uppercase;
+  }
+  .hd__title {
+    font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+    border-left: 1px solid var(--line); padding-left: 20px; margin-left: 4px;
+  }
+  .hd__title small { color: var(--fg-2); font-weight: 400; font-family: var(--mono); font-size: 10.5px; margin-left: 8px; letter-spacing: 0.08em; }
+  .hd__spacer { flex: 1; }
+  .hd__status {
+    font-family: var(--mono); font-size: 10.5px; color: var(--fg-2);
+    display: flex; align-items: center; gap: 16px;
+  }
+  .hd__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pos); display: inline-block; margin-right: 6px; box-shadow: 0 0 8px currentColor; }
+  .hd__owner { display: flex; align-items: center; gap: 10px; padding-left: 18px; border-left: 1px solid var(--line); }
+  .hd__avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--amber), var(--cyan));
+    display: grid; place-items: center; font-family: var(--mono);
+    font-weight: 700; font-size: 10px; color: var(--bg-0);
+  }
+
+  /* Tabs */
+  .tabs {
+    background: var(--bg-1);
+    border-bottom: 1px solid var(--line);
+    padding: 0 24px; display: flex; gap: 0;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .tab {
+    padding: 14px 22px; cursor: pointer; color: var(--fg-2);
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color 0.15s, border-color 0.15s;
+    user-select: none;
+  }
+  .tab:hover { color: var(--fg-1); }
+  .tab.is-active { color: var(--fg-0); border-bottom-color: var(--amber); }
+  .tab__count { color: var(--fg-3); margin-left: 8px; font-weight: 400; }
+  .tab.is-active .tab__count { color: var(--cyan); }
+
+  /* Main */
+  .main { padding: 24px; max-width: 1600px; margin: 0 auto; width: 100%; }
+
+  /* KPI strip */
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin-bottom: 20px;
+  }
+  .kpi {
+    background: var(--bg-2); border: 1px solid var(--line);
+    border-radius: 10px; padding: 16px 18px;
+  }
+  .kpi__lbl { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; color: var(--fg-2); text-transform: uppercase; margin-bottom: 6px; }
+  .kpi__val { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .kpi__val small { font-size: 13px; color: var(--fg-2); font-weight: 400; margin-left: 4px; }
+  .kpi__sub { font-size: 11px; color: var(--fg-2); margin-top: 4px; font-family: var(--mono); }
+
+  /* Zone chips */
+  .zones {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .zone {
+    background: var(--bg-2); border: 1px solid var(--line);
+    border-radius: 999px; padding: 8px 14px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .zone__flag { font-size: 13px; }
+  .zone__code { color: var(--fg-0); font-weight: 600; }
+  .zone__count { color: var(--cyan); font-variant-numeric: tabular-nums; }
+  .zone__sub { color: var(--fg-3); text-transform: uppercase; font-size: 10px; letter-spacing: 0.1em; }
+
+  /* Card container */
+  .card {
+    background: var(--bg-2); border: 1px solid var(--line);
+    border-radius: 10px; overflow: hidden; margin-bottom: 20px;
+  }
+  .card__hd {
+    padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+  }
+  .card__hd h3 { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+  .card__hd .tag {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    color: var(--fg-2); text-transform: uppercase;
+    background: var(--bg-3); padding: 4px 10px; border-radius: 999px;
+  }
+  .card__bd { padding: 18px; }
+
+  /* Company grid */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 14px;
+  }
+  .comp {
+    background: var(--bg-0); border: 1px solid var(--line-soft);
+    border-radius: 8px; padding: 14px;
+  }
+  .comp__hd {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 10px; gap: 10px;
+  }
+  .comp__name { font-weight: 600; font-size: 13px; }
+  .comp__zone {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    color: var(--fg-2); text-transform: uppercase;
+    background: var(--bg-3); padding: 3px 8px; border-radius: 4px;
+  }
+  .comp__total {
+    font-family: var(--mono); font-size: 11px; color: var(--cyan);
+  }
+
+  /* Bars */
+  .bars { display: flex; flex-direction: column; gap: 8px; }
+  .bar {
+    display: grid; grid-template-columns: 120px 1fr 36px;
+    align-items: center; gap: 10px; font-size: 11.5px;
+  }
+  .bar__lbl { color: var(--fg-1); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+  .bar__track {
+    height: 6px; background: var(--bg-3); border-radius: 4px; overflow: hidden;
+  }
+  .bar__fill {
+    height: 100%; background: linear-gradient(90deg, var(--cyan-dim), var(--cyan));
+    border-radius: 4px; transition: width 0.5s ease-out;
+  }
+  .bar.is-hot .bar__fill {
+    background: linear-gradient(90deg, var(--amber-dim), var(--amber));
+  }
+  .bar__n {
+    font-family: var(--mono); font-size: 11px; color: var(--fg-0);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .hot-tag {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+    color: var(--amber); background: var(--amber-dim);
+    padding: 1px 6px; border-radius: 3px; text-transform: uppercase;
+  }
+
+  /* Empty state */
+  .empty {
+    text-align: center; padding: 60px 20px;
+    color: var(--fg-2); font-family: var(--mono); font-size: 12px;
+    background: var(--bg-2); border: 1px dashed var(--line); border-radius: 10px;
+  }
+  .empty b { color: var(--fg-1); font-weight: 600; }
+
+  /* Footer */
+  .ft {
+    padding: 24px; text-align: center;
+    font-family: var(--mono); font-size: 10.5px; color: var(--fg-3);
+    border-top: 1px solid var(--line); margin-top: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Header -->
+  <header class="hd">
+    <div class="hd__mark"></div>
+    <div class="hd__wm">VT · Talent Intel</div>
+    <div class="hd__title">EU+UK · LATAM Talent Mobility <small>CFD / Retail FX competitor tracker</small></div>
+    <div class="hd__spacer"></div>
+    <div class="hd__status">
+      <span><span class="hd__dot"></span>LIVE · Adzuna</span>
+      <span id="lastSync">Last sync — —</span>
+    </div>
+    <div class="hd__owner">
+      <div class="hd__avatar">HR</div>
+      <div>
+        <div style="font-size:12px;font-weight:500">HR Team</div>
+        <div style="font-size:10.5px;color:var(--fg-2);font-family:var(--mono)">VT Markets</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <nav class="tabs" role="tablist">
+    <div class="tab is-active" data-tab="eu" role="tab">EU+UK <span class="tab__count" id="euCount">—</span></div>
+    <div class="tab"             data-tab="latam" role="tab">LATAM <span class="tab__count" id="latamCount">—</span></div>
+  </nav>
+
+  <!-- Main (rendered by JS) -->
+  <main class="main" id="main">
+    <div class="empty">Loading <b>Adzuna</b> data —</div>
+  </main>
+
+  <footer class="ft">
+    Weekly refresh via GitHub Actions · Data © <a href="https://www.adzuna.com" style="color:var(--fg-2)">Adzuna</a> · Source code on GitHub
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const DATA_PATHS = {
+    eu:    "data/eu_data.json",
+    latam: "data/latam_data.json",
+  };
+
+  // Country metadata for zone chips.
+  const ZONE_META = {
+    UK: { flag: "🇬🇧", label: "FCA · London" },
+    DE: { flag: "🇩🇪", label: "BaFin · Frankfurt" },
+    PL: { flag: "🇵🇱", label: "KNF · Warsaw" },
+    CH: { flag: "🇨🇭", label: "FINMA · Zurich" },
+    NL: { flag: "🇳🇱", label: "AFM · Amsterdam" },
+    FR: { flag: "🇫🇷", label: "AMF · Paris" },
+    IT: { flag: "🇮🇹", label: "CONSOB · Milan" },
+    ES: { flag: "🇪🇸", label: "CNMV · Madrid" },
+    BE: { flag: "🇧🇪", label: "FSMA · Brussels" },
+    AT: { flag: "🇦🇹", label: "FMA · Vienna" },
+    BR: { flag: "🇧🇷", label: "CVM · São Paulo" },
+    MX: { flag: "🇲🇽", label: "CNBV · Mexico City" },
+    CL: { flag: "🇨🇱", label: "CMF · Santiago" },
+  };
+
+  const BUCKETS = ["Sales / BD", "Compliance / Risk", "Marketing"];
+
+  const state = {
+    eu: null,
+    latam: null,
+    active: "eu",
+  };
+
+  // ---------- fetch ----------
+  async function loadAll() {
+    const [eu, latam] = await Promise.all([
+      fetchJson(DATA_PATHS.eu).catch(e => { console.warn("EU data missing", e); return null; }),
+      fetchJson(DATA_PATHS.latam).catch(e => { console.warn("LATAM data missing", e); return null; }),
+    ]);
+    state.eu = eu;
+    state.latam = latam;
+
+    updateTabCounts();
+    updateLastSync();
+    render(state.active);
+  }
+
+  async function fetchJson(path) {
+    const url = path + "?t=" + Date.now();
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status} for ${path}`);
+    return res.json();
+  }
+
+  // ---------- derive ----------
+  function summarize(payload) {
+    if (!payload || !payload.records) {
+      return { total: 0, hotCos: 0, zones: [], byCompany: {} };
+    }
+    const byCompany = {};
+    const byZone = {};
+    let total = 0;
+    const hotCos = new Set();
+    for (const r of payload.records) {
+      total += r.count;
+      if (r.hot) hotCos.add(r.company);
+      byZone[r.zone] = (byZone[r.zone] || 0) + r.count;
+      if (!byCompany[r.company]) {
+        byCompany[r.company] = { zone: r.zone, total: 0, buckets: {} };
+      }
+      byCompany[r.company].total += r.count;
+      byCompany[r.company].buckets[r.function] = r;
+    }
+    const zones = Object.keys(byZone).sort().map(z => ({ code: z, count: byZone[z] }));
+    return { total, hotCos: hotCos.size, zones, byCompany };
+  }
+
+  // ---------- render ----------
+  function updateTabCounts() {
+    document.getElementById("euCount").textContent    = state.eu    ? state.eu.record_count    : "—";
+    document.getElementById("latamCount").textContent = state.latam ? state.latam.record_count : "—";
+  }
+
+  function updateLastSync() {
+    const latest = [state.eu, state.latam]
+      .filter(p => p && p.generated_at)
+      .map(p => p.generated_at)
+      .sort()
+      .pop();
+    if (!latest) return;
+    // Keep the raw ISO, trim seconds for readability.
+    const d = new Date(latest);
+    const s = d.toISOString().replace("T", " ").slice(0, 16) + " UTC";
+    document.getElementById("lastSync").textContent = "Last sync — " + s;
+  }
+
+  function render(region) {
+    const payload = state[region];
+    const main = document.getElementById("main");
+    if (!payload || payload.record_count === 0) {
+      main.innerHTML = renderEmpty(region, payload);
+      return;
+    }
+    const s = summarize(payload);
+    main.innerHTML = `
+      ${renderKpis(payload, s)}
+      ${renderZones(s)}
+      ${renderCompanies(s)}
+    `;
+    // Animate bars
+    requestAnimationFrame(() => {
+      document.querySelectorAll(".bar__fill[data-w]").forEach(el => {
+        el.style.width = el.dataset.w + "%";
+      });
+    });
+  }
+
+  function renderKpis(payload, s) {
+    const label = payload.region_label || payload.region || "—";
+    return `
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi__lbl">Open Reqs · 30d</div>
+          <div class="kpi__val">${s.total}<small>jobs</small></div>
+          <div class="kpi__sub">${label} · ${s.zones.length} country${s.zones.length === 1 ? "" : "s"}</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__lbl">Hot Competitors</div>
+          <div class="kpi__val">${s.hotCos}<small>/ ${Object.keys(s.byCompany).length}</small></div>
+          <div class="kpi__sub">&ge; 5 reqs in one bucket</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__lbl">Coverage</div>
+          <div class="kpi__val">${Object.keys(s.byCompany).length}<small>firms</small></div>
+          <div class="kpi__sub">Tracked competitors</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__lbl">Data Source</div>
+          <div class="kpi__val" style="font-size:15px;font-family:var(--mono);letter-spacing:0.08em;padding-top:8px">ADZUNA</div>
+          <div class="kpi__sub">${payload.source || "mock"} · weekly refresh</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderZones(s) {
+    if (!s.zones.length) return "";
+    return `
+      <div class="zones">
+        ${s.zones.map(z => {
+          const meta = ZONE_META[z.code] || { flag: "", label: z.code };
+          return `
+            <div class="zone">
+              <span class="zone__flag">${meta.flag}</span>
+              <span class="zone__code">${z.code}</span>
+              <span class="zone__sub">${meta.label}</span>
+              <span class="zone__count">${z.count}</span>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  function renderCompanies(s) {
+    const companies = Object.keys(s.byCompany).sort((a, b) => s.byCompany[b].total - s.byCompany[a].total);
+    if (!companies.length) return "";
+    // max count in any single bucket across visible cards → scale bars
+    let max = 0;
+    for (const c of companies) {
+      for (const b of BUCKETS) {
+        const rec = s.byCompany[c].buckets[b];
+        if (rec && rec.count > max) max = rec.count;
+      }
+    }
+    max = Math.max(max, 3); // min scale so 1-2 counts don't fill 100%
+
+    return `
+      <div class="card">
+        <div class="card__hd">
+          <h3>Competitor Hiring · by Function</h3>
+          <span class="tag">3 buckets · Sales / Compliance / Marketing</span>
+        </div>
+        <div class="card__bd">
+          <div class="comp-grid">
+            ${companies.map(name => renderCompanyCard(name, s.byCompany[name], max)).join("")}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCompanyCard(name, data, max) {
+    return `
+      <div class="comp">
+        <div class="comp__hd">
+          <div>
+            <div class="comp__name">${escapeHtml(name)}</div>
+            <div class="comp__zone" style="margin-top:4px;display:inline-block">${data.zone}</div>
+          </div>
+          <div class="comp__total">${data.total} open</div>
+        </div>
+        <div class="bars">
+          ${BUCKETS.map(b => renderBar(b, data.buckets[b], max)).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderBar(label, rec, max) {
+    const count = rec ? rec.count : 0;
+    const hot = rec && rec.hot;
+    const pct = Math.round((count / max) * 100);
+    return `
+      <div class="bar ${hot ? "is-hot" : ""}">
+        <div class="bar__lbl">
+          ${label}${hot ? ' <span class="hot-tag">Hot</span>' : ""}
+        </div>
+        <div class="bar__track">
+          <div class="bar__fill" data-w="${pct}" style="width:0"></div>
+        </div>
+        <div class="bar__n">${count}</div>
+      </div>
+    `;
+  }
+
+  function renderEmpty(region, payload) {
+    const label = region === "eu" ? "EU+UK" : "LATAM";
+    if (!payload) {
+      return `<div class="empty">No <b>${label}</b> data file found. Run <code>python talent_scraper.py --region ${region} --source adzuna</code> or wait for the weekly workflow.</div>`;
+    }
+    return `
+      <div class="empty">
+        <b>${label}</b> returned <b>0</b> matching jobs this week.<br>
+        Last sync: ${payload.generated_at || "—"} · Source: ${payload.source || "—"}<br>
+        Check the workflow log — Adzuna may have had no matches for the tracked company aliases in the last 30 days.
+      </div>
+    `;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  // ---------- tabs ----------
+  document.querySelectorAll(".tab").forEach(t => {
+    t.addEventListener("click", () => {
+      const region = t.dataset.tab;
+      if (region === state.active) return;
+      document.querySelectorAll(".tab").forEach(x => x.classList.toggle("is-active", x === t));
+      state.active = region;
+      render(region);
+    });
+  });
+
+  loadAll();
+})();
+</script>
+</body>
+</html>

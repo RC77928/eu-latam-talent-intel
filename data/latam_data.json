@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-04-24T11:30:00+08:00",
+  "region": "latam",
+  "region_label": "LATAM",
+  "source": "mock",
+  "record_count": 5,
+  "records": [
+    {"company": "XP Investimentos", "zone": "BR", "function": "Sales / BD",        "count": 6, "hot": true,  "salary_min": null, "salary_max": null, "salary_currency": "BRL", "country": "br", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "XP Investimentos", "zone": "BR", "function": "Compliance / Risk", "count": 3, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "BRL", "country": "br", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "BTG Pactual",      "zone": "BR", "function": "Compliance / Risk", "count": 4, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "BRL", "country": "br", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "GBM",              "zone": "MX", "function": "Sales / BD",        "count": 2, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "MXN", "country": "mx", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"},
+    {"company": "Actinver",         "zone": "MX", "function": "Compliance / Risk", "count": 2, "hot": false, "salary_min": null, "salary_max": null, "salary_currency": "MXN", "country": "mx", "source": "mock", "updated_at": "2026-04-24T11:30:00+08:00"}
+  ]
+}
