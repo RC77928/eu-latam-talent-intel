@@ -637,13 +637,24 @@
     color: var(--fg-2);
   }
   .rbar.base {
-    background: var(--fg-3);
-    height: 6px;
+    /* striped pattern + outline so general / market bars never get mistaken for the premium */
+    background:
+      repeating-linear-gradient(
+        45deg,
+        oklch(0.42 0.010 250 / 0.70),
+        oklch(0.42 0.010 250 / 0.70) 4px,
+        oklch(0.30 0.010 250) 4px,
+        oklch(0.30 0.010 250) 8px
+      );
+    height: 8px;
+    border: 1px solid var(--fg-3);
+    border-radius: 1px;
   }
   .rbar.prem {
     background: var(--amber);
-    height: 10px;
-    box-shadow: 0 0 0 1px var(--amber);
+    height: 12px;
+    box-shadow: 0 0 0 1px var(--amber), 0 0 8px oklch(0.80 0.14 75 / 0.35);
+    border-radius: 1px;
   }
   .rbar .rbar__cap {
     position: absolute;
@@ -1481,6 +1492,63 @@
   body.is-latam-mode .latam-notice { display: flex; }
   body.is-latam-mode .eu-only { display: none; }
   body:not(.is-latam-mode) .latam-only { display: none; }
+
+  /* LATAM Salary stat card — text-based, no chart since LATAM rbar would mis-fit EU axis */
+  .lsalary-grid { display: grid; gap: 1px; background: var(--line-soft); border-radius: 4px; overflow: hidden; }
+  .lsalary-row {
+    display: grid; grid-template-columns: 230px 130px 26px 1fr 70px;
+    background: var(--bg-2); padding: 12px 16px; align-items: center; gap: 14px;
+  }
+  .lsalary-row__role { font-size: 13px; font-weight: 600; color: var(--fg-0); }
+  .lsalary-row__role span {
+    display: block; font-family: var(--mono); font-size: 9px; color: var(--fg-2);
+    letter-spacing: 0.10em; text-transform: uppercase; margin-top: 2px;
+  }
+  .lsalary-row__base {
+    font-family: var(--mono); font-size: 12px; color: var(--fg-1);
+    background: oklch(0.30 0.010 250); border: 1px solid var(--fg-3);
+    padding: 4px 8px; border-radius: 2px; text-align: center;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        oklch(0.42 0.010 250 / 0.70),
+        oklch(0.42 0.010 250 / 0.70) 4px,
+        oklch(0.30 0.010 250) 4px,
+        oklch(0.30 0.010 250) 8px
+      );
+  }
+  .lsalary-row__arrow {
+    font-family: var(--mono); font-size: 14px; color: var(--fg-3); text-align: center;
+  }
+  .lsalary-row__prem {
+    font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--bg-0);
+    background: var(--amber); padding: 4px 10px; border-radius: 2px;
+    box-shadow: 0 0 0 1px var(--amber);
+    display: inline-block; max-width: max-content;
+  }
+  .lsalary-row__prem small {
+    font-weight: 500; opacity: 0.75; margin-left: 6px; font-size: 10px;
+  }
+  .lsalary-row__lift {
+    font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--amber);
+    text-align: right;
+  }
+  .lsalary-row__lift small {
+    display: block; font-size: 9px; font-weight: 400; color: var(--fg-3);
+    letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px;
+  }
+  .lsalary-legend {
+    margin-top: 10px; padding: 10px 14px; background: var(--bg-2); border-radius: 4px;
+    font-family: var(--mono); font-size: 10px; color: var(--fg-2); letter-spacing: 0.04em;
+  }
+  .lsalary-legend b { color: var(--fg-1); }
+  .lsalary-legend .conf-flag {
+    display: inline-block; padding: 1px 6px; border-radius: 2px;
+    font-family: var(--mono); font-size: 9px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    background: oklch(0.70 0.18 25 / 0.18); color: var(--neg);
+    margin-left: 6px;
+  }
   body.is-latam-mode .view[data-view="flow"] .card,
   body.is-latam-mode .view[data-view="salary"] .card { opacity: 0.55; filter: grayscale(0.15); }
   body.is-latam-mode .view[data-view="flow"] .latam-notice,
@@ -2230,23 +2298,23 @@
         </div>
       </div>
 
-      <!-- Range chart -->
-      <div class="card" style="margin-bottom:16px">
+      <!-- Range chart (EU view — hidden in LATAM mode; LATAM gets text-based stat card below) -->
+      <div class="card eu-only" style="margin-bottom:16px">
         <div class="card__hd">
-          <h3 data-region-eu="Salary Range × Qualification Premium — GBP k / year (P25–P75)" data-region-latam="Salary Range × Qualification Premium — USD k / year (P25–P75 reference)">Salary Range × Qualification Premium — GBP k / year (P25–P75)</h3>
-          <span class="tag" data-region-eu="EU+UK CFD · 2026 Q2 compiled" data-region-latam="LATAM Cyprus-broker offers · USD-pegged · 2026 Q2">EU+UK CFD · 2026 Q2 compiled</span>
+          <h3>Salary Range × Qualification Premium — USD k / year base (P25–P75)</h3>
+          <span class="tag">EU+UK CFD · 2026 Q2 · Hays + Robert Half + Emerald Zebra + Morgan McKinley + Finance Magnates</span>
         </div>
         <div class="card__bd" style="padding:0">
           <div class="rchart">
             <!-- Axis: 20k→260k GBP/yr for EU ; 60k→800k BRL/yr for LATAM (JS swaps) -->
             <div class="rchart__axis">
               <div>Role · Function</div>
-              <div class="ascale" id="salaryAxis" data-region-eu="20k|80k|140k|200k|260k" data-region-latam="USD 0|USD 45k|USD 90k|USD 135k|USD 180k">
-                <span style="left:0%">20k</span>
-                <span style="left:25%">80k</span>
-                <span style="left:50%">140k</span>
-                <span style="left:75%">200k</span>
-                <span style="left:100%">260k</span>
+              <div class="ascale" id="salaryAxis">
+                <span style="left:0%">USD 0</span>
+                <span style="left:25%">45k</span>
+                <span style="left:50%">90k</span>
+                <span style="left:75%">135k</span>
+                <span style="left:100%">180k</span>
                 <div class="atick">
                   <i style="left:0%"></i><i style="left:25%"></i><i style="left:50%"></i><i style="left:75%"></i><i style="left:100%"></i>
                 </div>
@@ -2254,152 +2322,197 @@
               <div style="text-align:right">Premium Gap</div>
             </div>
 
-            <!-- Account Manager (retail sales) — positions preserved from MENA scale (20-180 → 20-260 via JS) -->
+            <!-- EU+UK · USD scale 0-180k (Limassol baseline + London FCA tier) -->
+            <!-- Account Manager: 30-49 / 45-75 (DE/PL native FCA UK) -->
             <div class="rrow">
               <div class="rrow__role">
                 <div class="rn">Account Manager</div>
                 <div class="rm">RETAIL CFD · FRONTLINE</div>
               </div>
               <div class="rrow__plot">
-                <div class="rbar base" style="left:3.125%; width:9.375%">
-                  <span class="rbar__cap">35–55k</span>
+                <div class="rbar base" style="left:16.7%; width:10.6%">
+                  <span class="rbar__cap">CY · 30–49k</span>
                 </div>
-                <div class="rbar prem" style="left:15.625%; width:18.75%">
-                  <span class="rbar__cap">DE · 55–85k</span>
+                <div class="rbar prem" style="left:25%; width:16.7%">
+                  <span class="rbar__cap">DE/PL · 45–75k</span>
                 </div>
               </div>
               <div class="rrow__gap">
-                <div class="gpct">+55%</div>
-                <div class="glbl">German / Polish native</div>
+                <div class="gpct">+50%</div>
+                <div class="glbl">DE / PL native · FCA tier</div>
               </div>
             </div>
 
-            <!-- Compliance Officer (FCA) -->
+            <!-- Compliance Officer: 38-95 / 75-145 (FCA SMF-16/17 holder) -->
             <div class="rrow is-hero">
               <div class="rrow__role">
                 <div class="rn">Compliance Officer</div>
                 <div class="rm">FCA · SMF-16 / SMF-17</div>
               </div>
               <div class="rrow__plot">
-                <div class="rbar base" style="left:12.5%; width:12.5%">
-                  <span class="rbar__cap">60–85k</span>
+                <div class="rbar base" style="left:21.1%; width:31.7%">
+                  <span class="rbar__cap inside">38–95k</span>
                 </div>
-                <div class="rbar prem" style="left:34.375%; width:34.375%">
-                  <span class="rbar__cap inside">95–150k</span>
-                </div>
-              </div>
-              <div class="rrow__gap">
-                <div class="gpct">+112%</div>
-                <div class="glbl">SMF / ICARA owner</div>
-              </div>
-            </div>
-
-            <!-- Institutional Sales -->
-            <div class="rrow is-hero">
-              <div class="rrow__role">
-                <div class="rn">Institutional Sales</div>
-                <div class="rm">B2B · LIQUIDITY / PRIME</div>
-              </div>
-              <div class="rrow__plot">
-                <div class="rbar base" style="left:21.875%; width:18.75%">
-                  <span class="rbar__cap">75–110k</span>
-                </div>
-                <div class="rbar prem" style="left:56.25%; width:43.75%">
-                  <span class="rbar__cap inside">145–245k</span>
+                <div class="rbar prem" style="left:41.7%; width:38.9%">
+                  <span class="rbar__cap inside">75–145k (London SMF)</span>
                 </div>
               </div>
               <div class="rrow__gap">
-                <div class="gpct">+118%</div>
-                <div class="glbl">Portable EU book</div>
+                <div class="gpct">+35%</div>
+                <div class="glbl">FCA SMF holder · London</div>
               </div>
             </div>
 
-            <!-- Risk Analyst -->
+            <!-- Risk Analyst: 40-80 / 55-105 (Bloomberg + market risk) -->
             <div class="rrow">
               <div class="rrow__role">
                 <div class="rn">Risk Analyst</div>
-                <div class="rm">MARKET · COUNTERPARTY</div>
+                <div class="rm">MARKET · CREDIT · BLOOMBERG</div>
               </div>
               <div class="rrow__plot">
-                <div class="rbar base" style="left:9.375%; width:12.5%">
-                  <span class="rbar__cap">50–75k</span>
+                <div class="rbar base" style="left:22.2%; width:22.2%">
+                  <span class="rbar__cap inside">40–80k</span>
                 </div>
-                <div class="rbar prem" style="left:34.375%; width:28.125%">
-                  <span class="rbar__cap inside">90–135k</span>
+                <div class="rbar prem" style="left:30.6%; width:27.8%">
+                  <span class="rbar__cap inside">55–105k</span>
                 </div>
               </div>
               <div class="rrow__gap">
-                <div class="gpct">+92%</div>
-                <div class="glbl">FRM · CFD book exp.</div>
+                <div class="gpct">+30%</div>
+                <div class="glbl">Bloomberg-cert · market risk</div>
               </div>
             </div>
 
-            <!-- Dealer -->
+            <!-- Dealer / Trader: 35-100 / 60-145 (prop-book P&L · tier-2+ broker) -->
             <div class="rrow">
               <div class="rrow__role">
-                <div class="rn">Dealer · Trading Desk</div>
-                <div class="rm">EXECUTION · MARKET MAKING</div>
+                <div class="rn">Dealer · Trader</div>
+                <div class="rm">DEALING DESK · MARKET MAKING</div>
               </div>
               <div class="rrow__plot">
-                <div class="rbar base" style="left:6.25%; width:9.375%">
-                  <span class="rbar__cap">45–65k</span>
+                <div class="rbar base" style="left:19.4%; width:36.1%">
+                  <span class="rbar__cap inside">35–100k</span>
                 </div>
-                <div class="rbar prem" style="left:25%; width:21.875%">
-                  <span class="rbar__cap inside">85–130k</span>
+                <div class="rbar prem" style="left:33.3%; width:47.2%">
+                  <span class="rbar__cap inside">60–145k</span>
                 </div>
               </div>
               <div class="rrow__gap">
-                <div class="gpct">+100%</div>
-                <div class="glbl">Prop-book P&amp;L exp.</div>
+                <div class="gpct">+40%</div>
+                <div class="glbl">Prop-book P&amp;L track record</div>
               </div>
             </div>
 
-            <!-- Marketing -->
+            <!-- Marketing Manager: 45-95 / 60-125 (perf/paid-media at FCA tier) -->
             <div class="rrow">
               <div class="rrow__role">
                 <div class="rn">Marketing Manager</div>
-                <div class="rm">PERFORMANCE · CRM</div>
+                <div class="rm">PERFORMANCE · CRM · PAID MEDIA</div>
               </div>
               <div class="rrow__plot">
-                <div class="rbar base" style="left:6.25%; width:12.5%">
-                  <span class="rbar__cap">45–70k</span>
+                <div class="rbar base" style="left:25%; width:27.8%">
+                  <span class="rbar__cap inside">45–95k</span>
                 </div>
-                <div class="rbar prem" style="left:28.125%; width:28.125%">
-                  <span class="rbar__cap inside">80–125k</span>
+                <div class="rbar prem" style="left:33.3%; width:36.1%">
+                  <span class="rbar__cap inside">60–125k</span>
                 </div>
               </div>
               <div class="rrow__gap">
-                <div class="gpct">+78%</div>
-                <div class="glbl">CFD-regulated growth</div>
+                <div class="gpct">+35%</div>
+                <div class="glbl">FCA-tier broker · perf-marketing</div>
               </div>
             </div>
 
-            <!-- Product -->
+            <!-- Product Manager: 50-110 / 75-150 (trading-platform UX or market-data eng) -->
             <div class="rrow is-hero">
               <div class="rrow__role">
                 <div class="rn">Product Manager</div>
-                <div class="rm">BROKERAGE PLATFORM</div>
+                <div class="rm">TRADING PLATFORM · UX</div>
               </div>
               <div class="rrow__plot">
-                <div class="rbar base" style="left:15.625%; width:12.5%">
-                  <span class="rbar__cap">70–95k</span>
+                <div class="rbar base" style="left:27.8%; width:33.3%">
+                  <span class="rbar__cap inside">50–110k</span>
                 </div>
-                <div class="rbar prem" style="left:43.75%; width:37.5%">
-                  <span class="rbar__cap inside">120–190k</span>
+                <div class="rbar prem" style="left:41.7%; width:41.7%">
+                  <span class="rbar__cap inside">75–150k</span>
                 </div>
               </div>
               <div class="rrow__gap">
-                <div class="gpct">+108%</div>
-                <div class="glbl">Multi-asset CFD PM</div>
+                <div class="gpct">+40%</div>
+                <div class="glbl">Trading-platform UX · London tier</div>
               </div>
             </div>
 
             <!-- Legend -->
             <div class="rlegend">
-              <span><span class="rsw base"></span>General role · market P25–P75</span>
-              <span><span class="rsw prem"></span>Qualified / specialized · premium P25–P75</span>
-              <span style="margin-left:auto" data-region-eu="Source · Adzuna UK/DE/PL/CH + LinkedIn cross-check · n≈210 postings" data-region-latam="Source · Adzuna BR/MX + Catho · n≈40 postings (thin)">Source · Adzuna UK/DE/PL/CH + LinkedIn cross-check · n≈210 postings</span>
+              <span><span class="rsw base"></span>General role · market P25–P75 base</span>
+              <span><span class="rsw prem"></span>Qualified / specialized · premium P25–P75 base</span>
+              <span style="margin-left:auto">Sources · Hays UK 2026 · Robert Half UK · Emerald Zebra Cyprus 2025 · Morgan McKinley · Finance Magnates 2025 exclusives</span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LATAM-only Salary stat card — text-based ranges since LATAM-specific rbar axis would diverge from EU -->
+      <div class="card latam-only" style="margin-bottom:16px">
+        <div class="card__hd">
+          <h3>USD Salary Reference — Cyprus Broker LATAM Floor (P25–P75 annual base)</h3>
+          <span class="tag">LATAM · 2026 Q2 · Page Personnel + Glassdoor BR/MX + ERI SalaryExpert + Levels.fyi</span>
+        </div>
+        <div class="card__bd">
+          <div class="lsalary-grid">
+
+            <div class="lsalary-row">
+              <div class="lsalary-row__role">Account Manager <span>retail · PT/ES native</span></div>
+              <div class="lsalary-row__base">24–42k</div>
+              <div class="lsalary-row__arrow">→</div>
+              <div><span class="lsalary-row__prem">PT/ES · 38–68k <small>P25–P75</small></span></div>
+              <div class="lsalary-row__lift">+60%<small>language native</small></div>
+            </div>
+
+            <div class="lsalary-row">
+              <div class="lsalary-row__role">Compliance Officer <span>CVM-licensed</span></div>
+              <div class="lsalary-row__base">25–60k</div>
+              <div class="lsalary-row__arrow">→</div>
+              <div><span class="lsalary-row__prem">CVM · 38–85k</span></div>
+              <div class="lsalary-row__lift">+45%<small>broker-dealer track</small></div>
+            </div>
+
+            <div class="lsalary-row">
+              <div class="lsalary-row__role">Risk Analyst <span>market · credit</span></div>
+              <div class="lsalary-row__base">22–50k</div>
+              <div class="lsalary-row__arrow">→</div>
+              <div><span class="lsalary-row__prem">30–68k</span></div>
+              <div class="lsalary-row__lift">+35%<small>Bloomberg-cert · bilingual</small></div>
+            </div>
+
+            <div class="lsalary-row">
+              <div class="lsalary-row__role">Dealer · Trader <span>dealing desk</span></div>
+              <div class="lsalary-row__base">30–80k</div>
+              <div class="lsalary-row__arrow">→</div>
+              <div><span class="lsalary-row__prem">45–115k</span></div>
+              <div class="lsalary-row__lift">+40%<small>prop P&amp;L · low-conf</small></div>
+            </div>
+
+            <div class="lsalary-row">
+              <div class="lsalary-row__role">Marketing Manager <span>perf · paid-media</span></div>
+              <div class="lsalary-row__base">28–65k</div>
+              <div class="lsalary-row__arrow">→</div>
+              <div><span class="lsalary-row__prem">38–88k</span></div>
+              <div class="lsalary-row__lift">+35%<small>PT/ES creative</small></div>
+            </div>
+
+            <div class="lsalary-row">
+              <div class="lsalary-row__role">Product Manager <span>trading platform</span></div>
+              <div class="lsalary-row__base">35–80k</div>
+              <div class="lsalary-row__arrow">→</div>
+              <div><span class="lsalary-row__prem">50–115k</span></div>
+              <div class="lsalary-row__lift">+40%<small>UX · low-conf</small></div>
+            </div>
+
+          </div>
+          <div class="lsalary-legend">
+            <b>Reading note:</b> All figures USD-equivalent annual base (no commission, bonus, equity). Cyprus-Limassol contractors paid USD-pegged dominate the LATAM CFD hiring channel; local Sao Paulo / CDMX rates often translate ~30–50% lower in USD terms but stronger in PPP. Confidence flagged inline — Dealer / Trader and Product Manager lifts are <span class="conf-flag">low-conf</span> due to thin public CFD-specific data.
           </div>
         </div>
       </div>
