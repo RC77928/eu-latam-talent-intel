@@ -2796,7 +2796,8 @@
     }
 
     function dataUrlFor(region) {
-      return region === 'latam' ? './data/latam_data.json' : './data/eu_data.json';
+      var base = 'https://cfd-talent-intel-core.rob77928.workers.dev/data/';
+      return region === 'latam' ? base + 'latam.json' : base + 'eu.json';
     }
 
     function loadRegion(region) {
