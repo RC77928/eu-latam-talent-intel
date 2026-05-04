@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-04-27T17:15:14+08:00",
+  "generated_at": "2026-05-04T17:09:46+08:00",
   "region": "latam",
   "region_label": "LATAM",
   "source": "adzuna",
-  "record_count": 2,
+  "record_count": 4,
   "records": [
     {
       "company": "BTG Pactual",
@@ -16,7 +16,33 @@
       "salary_currency": "BRL",
       "country": "br",
       "source": "adzuna",
-      "updated_at": "2026-04-27T17:15:14+08:00"
+      "updated_at": "2026-05-04T17:09:46+08:00"
+    },
+    {
+      "company": "BTG Pactual",
+      "zone": "BR",
+      "function": "Compliance / Risk",
+      "count": 1,
+      "hot": false,
+      "salary_min": null,
+      "salary_max": null,
+      "salary_currency": "BRL",
+      "country": "br",
+      "source": "adzuna",
+      "updated_at": "2026-05-04T17:09:46+08:00"
+    },
+    {
+      "company": "Actinver",
+      "zone": "MX",
+      "function": "Marketing",
+      "count": 2,
+      "hot": false,
+      "salary_min": 4800,
+      "salary_max": 7200,
+      "salary_currency": "MXN",
+      "country": "mx",
+      "source": "adzuna",
+      "updated_at": "2026-05-04T17:09:46+08:00"
     },
     {
       "company": "Actinver",
@@ -29,7 +55,7 @@
       "salary_currency": "MXN",
       "country": "mx",
       "source": "adzuna",
-      "updated_at": "2026-04-27T17:15:14+08:00"
+      "updated_at": "2026-05-04T17:09:46+08:00"
     }
   ]
 }
