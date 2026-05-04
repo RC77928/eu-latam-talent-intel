@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-04-27T17:14:50+08:00",
+  "generated_at": "2026-05-04T17:09:30+08:00",
   "region": "eu",
   "region_label": "EU+UK",
   "source": "adzuna",
-  "record_count": 5,
+  "record_count": 6,
   "records": [
     {
       "company": "Swissquote",
       "zone": "CH",
       "function": "Compliance / Risk",
-      "count": 3,
-      "hot": false,
+      "count": 8,
+      "hot": true,
       "salary_min": null,
       "salary_max": null,
       "salary_currency": "CHF",
       "country": "ch",
       "source": "adzuna",
-      "updated_at": "2026-04-27T17:14:50+08:00"
+      "updated_at": "2026-05-04T17:09:30+08:00"
     },
     {
       "company": "Swissquote",
@@ -29,7 +29,33 @@
       "salary_currency": "CHF",
       "country": "ch",
       "source": "adzuna",
-      "updated_at": "2026-04-27T17:14:50+08:00"
+      "updated_at": "2026-05-04T17:09:30+08:00"
+    },
+    {
+      "company": "Swissquote",
+      "zone": "CH",
+      "function": "Marketing",
+      "count": 1,
+      "hot": false,
+      "salary_min": null,
+      "salary_max": null,
+      "salary_currency": "CHF",
+      "country": "ch",
+      "source": "adzuna",
+      "updated_at": "2026-05-04T17:09:30+08:00"
+    },
+    {
+      "company": "XTB (PL HQ)",
+      "zone": "PL",
+      "function": "Compliance / Risk",
+      "count": 5,
+      "hot": true,
+      "salary_min": 183600,
+      "salary_max": 310800,
+      "salary_currency": "PLN",
+      "country": "pl",
+      "source": "adzuna",
+      "updated_at": "2026-05-04T17:09:30+08:00"
     },
     {
       "company": "XTB (PL HQ)",
@@ -42,20 +68,7 @@
       "salary_currency": "PLN",
       "country": "pl",
       "source": "adzuna",
-      "updated_at": "2026-04-27T17:14:50+08:00"
-    },
-    {
-      "company": "XTB (PL HQ)",
-      "zone": "PL",
-      "function": "Compliance / Risk",
-      "count": 3,
-      "hot": false,
-      "salary_min": null,
-      "salary_max": null,
-      "salary_currency": "PLN",
-      "country": "pl",
-      "source": "adzuna",
-      "updated_at": "2026-04-27T17:14:50+08:00"
+      "updated_at": "2026-05-04T17:09:30+08:00"
     },
     {
       "company": "IG Group",
@@ -68,7 +81,7 @@
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-04-27T17:14:50+08:00"
+      "updated_at": "2026-05-04T17:09:30+08:00"
     }
   ]
 }
