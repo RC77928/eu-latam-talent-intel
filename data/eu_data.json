@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-11T20:25:23+08:00",
+  "generated_at": "2026-05-18T20:55:48+08:00",
   "region": "eu",
   "region_label": "EU+UK",
   "source": "adzuna",
@@ -16,20 +16,7 @@
       "salary_currency": "CHF",
       "country": "ch",
       "source": "adzuna",
-      "updated_at": "2026-05-11T20:25:23+08:00"
-    },
-    {
-      "company": "Swissquote",
-      "zone": "CH",
-      "function": "Marketing",
-      "count": 1,
-      "hot": false,
-      "salary_min": null,
-      "salary_max": null,
-      "salary_currency": "CHF",
-      "country": "ch",
-      "source": "adzuna",
-      "updated_at": "2026-05-11T20:25:23+08:00"
+      "updated_at": "2026-05-18T20:55:48+08:00"
     },
     {
       "company": "Swissquote",
@@ -42,33 +29,46 @@
       "salary_currency": "CHF",
       "country": "ch",
       "source": "adzuna",
-      "updated_at": "2026-05-11T20:25:23+08:00"
+      "updated_at": "2026-05-18T20:55:48+08:00"
+    },
+    {
+      "company": "Swissquote",
+      "zone": "CH",
+      "function": "Marketing",
+      "count": 1,
+      "hot": false,
+      "salary_min": null,
+      "salary_max": null,
+      "salary_currency": "CHF",
+      "country": "ch",
+      "source": "adzuna",
+      "updated_at": "2026-05-18T20:55:48+08:00"
     },
     {
       "company": "XTB (PL HQ)",
       "zone": "PL",
       "function": "Compliance / Risk",
-      "count": 5,
+      "count": 9,
       "hot": true,
-      "salary_min": 183600,
+      "salary_min": 173400,
       "salary_max": 310800,
       "salary_currency": "PLN",
       "country": "pl",
       "source": "adzuna",
-      "updated_at": "2026-05-11T20:25:23+08:00"
+      "updated_at": "2026-05-18T20:55:48+08:00"
     },
     {
       "company": "XTB (PL HQ)",
       "zone": "PL",
       "function": "Sales / BD",
-      "count": 4,
+      "count": 3,
       "hot": false,
       "salary_min": 78000,
-      "salary_max": 415200,
+      "salary_max": 90000,
       "salary_currency": "PLN",
       "country": "pl",
       "source": "adzuna",
-      "updated_at": "2026-05-11T20:25:23+08:00"
+      "updated_at": "2026-05-18T20:55:48+08:00"
     },
     {
       "company": "XTB (PL HQ)",
@@ -81,20 +81,20 @@
       "salary_currency": "PLN",
       "country": "pl",
       "source": "adzuna",
-      "updated_at": "2026-05-11T20:25:23+08:00"
+      "updated_at": "2026-05-18T20:55:48+08:00"
     },
     {
       "company": "CMC Markets",
       "zone": "UK",
       "function": "Compliance / Risk",
-      "count": 4,
+      "count": 3,
       "hot": false,
       "salary_min": null,
       "salary_max": null,
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-05-11T20:25:23+08:00"
+      "updated_at": "2026-05-18T20:55:48+08:00"
     },
     {
       "company": "CMC Markets",
@@ -107,7 +107,7 @@
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-05-11T20:25:23+08:00"
+      "updated_at": "2026-05-18T20:55:48+08:00"
     }
   ]
 }
