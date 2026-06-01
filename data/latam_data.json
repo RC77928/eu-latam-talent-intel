@@ -1,10 +1,23 @@
 {
-  "generated_at": "2026-05-25T13:01:30+08:00",
+  "generated_at": "2026-06-01T13:23:57+08:00",
   "region": "latam",
   "region_label": "LATAM",
   "source": "adzuna",
-  "record_count": 2,
+  "record_count": 3,
   "records": [
+    {
+      "company": "BTG Pactual",
+      "zone": "BR",
+      "function": "Marketing",
+      "count": 2,
+      "hot": false,
+      "salary_min": null,
+      "salary_max": null,
+      "salary_currency": "BRL",
+      "country": "br",
+      "source": "adzuna",
+      "updated_at": "2026-06-01T13:23:57+08:00"
+    },
     {
       "company": "BTG Pactual",
       "zone": "BR",
@@ -16,12 +29,12 @@
       "salary_currency": "BRL",
       "country": "br",
       "source": "adzuna",
-      "updated_at": "2026-05-25T13:01:30+08:00"
+      "updated_at": "2026-06-01T13:23:57+08:00"
     },
     {
-      "company": "Modalmais",
+      "company": "BTG Pactual",
       "zone": "BR",
-      "function": "Marketing",
+      "function": "Compliance / Risk",
       "count": 1,
       "hot": false,
       "salary_min": null,
@@ -29,7 +42,7 @@
       "salary_currency": "BRL",
       "country": "br",
       "source": "adzuna",
-      "updated_at": "2026-05-25T13:01:30+08:00"
+      "updated_at": "2026-06-01T13:23:57+08:00"
     }
   ]
 }
