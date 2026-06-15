@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-08T13:11:01+08:00",
+  "generated_at": "2026-06-15T13:35:07+08:00",
   "region": "eu",
   "region_label": "EU+UK",
   "source": "adzuna",
@@ -16,7 +16,7 @@
       "salary_currency": "CHF",
       "country": "ch",
       "source": "adzuna",
-      "updated_at": "2026-06-08T13:11:01+08:00"
+      "updated_at": "2026-06-15T13:35:07+08:00"
     },
     {
       "company": "Swissquote",
@@ -29,7 +29,7 @@
       "salary_currency": "CHF",
       "country": "ch",
       "source": "adzuna",
-      "updated_at": "2026-06-08T13:11:01+08:00"
+      "updated_at": "2026-06-15T13:35:07+08:00"
     },
     {
       "company": "Saxo Bank",
@@ -42,20 +42,7 @@
       "salary_currency": "EUR",
       "country": "nl",
       "source": "adzuna",
-      "updated_at": "2026-06-08T13:11:01+08:00"
-    },
-    {
-      "company": "XTB (PL HQ)",
-      "zone": "PL",
-      "function": "Compliance / Risk",
-      "count": 3,
-      "hot": false,
-      "salary_min": 120000,
-      "salary_max": 194400,
-      "salary_currency": "PLN",
-      "country": "pl",
-      "source": "adzuna",
-      "updated_at": "2026-06-08T13:11:01+08:00"
+      "updated_at": "2026-06-15T13:35:07+08:00"
     },
     {
       "company": "XTB (PL HQ)",
@@ -68,20 +55,33 @@
       "salary_currency": "PLN",
       "country": "pl",
       "source": "adzuna",
-      "updated_at": "2026-06-08T13:11:01+08:00"
+      "updated_at": "2026-06-15T13:35:07+08:00"
+    },
+    {
+      "company": "XTB (PL HQ)",
+      "zone": "PL",
+      "function": "Compliance / Risk",
+      "count": 2,
+      "hot": false,
+      "salary_min": 84000,
+      "salary_max": 102000,
+      "salary_currency": "PLN",
+      "country": "pl",
+      "source": "adzuna",
+      "updated_at": "2026-06-15T13:35:07+08:00"
     },
     {
       "company": "CMC Markets",
       "zone": "UK",
       "function": "Compliance / Risk",
-      "count": 7,
+      "count": 6,
       "hot": true,
       "salary_min": null,
       "salary_max": null,
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-06-08T13:11:01+08:00"
+      "updated_at": "2026-06-15T13:35:07+08:00"
     },
     {
       "company": "CMC Markets",
@@ -94,7 +94,7 @@
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-06-08T13:11:01+08:00"
+      "updated_at": "2026-06-15T13:35:07+08:00"
     },
     {
       "company": "CMC Markets",
@@ -107,7 +107,7 @@
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-06-08T13:11:01+08:00"
+      "updated_at": "2026-06-15T13:35:07+08:00"
     },
     {
       "company": "IG Group",
@@ -120,7 +120,7 @@
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-06-08T13:11:01+08:00"
+      "updated_at": "2026-06-15T13:35:07+08:00"
     },
     {
       "company": "Pepperstone UK",
@@ -133,7 +133,7 @@
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-06-08T13:11:01+08:00"
+      "updated_at": "2026-06-15T13:35:07+08:00"
     }
   ]
 }
