@@ -1,8 +1,22 @@
 {
-  "generated_at": "2026-07-06T12:50:18+08:00",
+  "generated_at": "2026-07-13T12:08:18+08:00",
   "region": "latam",
   "region_label": "LATAM",
   "source": "adzuna",
-  "record_count": 0,
-  "records": []
+  "record_count": 1,
+  "records": [
+    {
+      "company": "BTG Pactual",
+      "zone": "BR",
+      "function": "Compliance / Risk",
+      "count": 1,
+      "hot": false,
+      "salary_min": null,
+      "salary_max": null,
+      "salary_currency": "BRL",
+      "country": "br",
+      "source": "adzuna",
+      "updated_at": "2026-07-13T12:08:18+08:00"
+    }
+  ]
 }
