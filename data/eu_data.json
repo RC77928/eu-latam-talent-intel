@@ -1,48 +1,35 @@
 {
-  "generated_at": "2026-09-07T13:01:07+08:00",
+  "generated_at": "2026-09-14T13:15:09+08:00",
   "region": "eu",
   "region_label": "EU+UK",
   "source": "adzuna",
-  "record_count": 7,
+  "record_count": 6,
   "records": [
     {
       "company": "Swissquote",
       "zone": "CH",
       "function": "Compliance / Risk",
-      "count": 11,
+      "count": 10,
       "hot": true,
       "salary_min": null,
       "salary_max": null,
       "salary_currency": "CHF",
       "country": "ch",
       "source": "adzuna",
-      "updated_at": "2026-09-07T13:01:07+08:00"
-    },
-    {
-      "company": "Saxo Bank",
-      "zone": "NL",
-      "function": "Compliance / Risk",
-      "count": 1,
-      "hot": false,
-      "salary_min": null,
-      "salary_max": null,
-      "salary_currency": "EUR",
-      "country": "nl",
-      "source": "adzuna",
-      "updated_at": "2026-09-07T13:01:07+08:00"
+      "updated_at": "2026-09-14T13:15:09+08:00"
     },
     {
       "company": "XTB (PL HQ)",
       "zone": "PL",
       "function": "Compliance / Risk",
-      "count": 4,
-      "hot": false,
+      "count": 5,
+      "hot": true,
       "salary_min": 195840,
-      "salary_max": 310800,
+      "salary_max": 248400,
       "salary_currency": "PLN",
       "country": "pl",
       "source": "adzuna",
-      "updated_at": "2026-09-07T13:01:07+08:00"
+      "updated_at": "2026-09-14T13:15:09+08:00"
     },
     {
       "company": "XTB (PL HQ)",
@@ -55,7 +42,7 @@
       "salary_currency": "PLN",
       "country": "pl",
       "source": "adzuna",
-      "updated_at": "2026-09-07T13:01:07+08:00"
+      "updated_at": "2026-09-14T13:15:09+08:00"
     },
     {
       "company": "CMC Markets",
@@ -68,7 +55,7 @@
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-09-07T13:01:07+08:00"
+      "updated_at": "2026-09-14T13:15:09+08:00"
     },
     {
       "company": "CMC Markets",
@@ -81,20 +68,20 @@
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-09-07T13:01:07+08:00"
+      "updated_at": "2026-09-14T13:15:09+08:00"
     },
     {
-      "company": "OANDA UK",
+      "company": "IG Group",
       "zone": "UK",
-      "function": "Compliance / Risk",
-      "count": 1,
+      "function": "Marketing",
+      "count": 2,
       "hot": false,
       "salary_min": null,
       "salary_max": null,
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-09-07T13:01:07+08:00"
+      "updated_at": "2026-09-14T13:15:09+08:00"
     }
   ]
 }
