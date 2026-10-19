@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T14:16:39+08:00",
+  "generated_at": "2026-10-19T13:02:22+08:00",
   "region": "eu",
   "region_label": "EU+UK",
   "source": "adzuna",
@@ -9,14 +9,40 @@
       "company": "Swissquote",
       "zone": "CH",
       "function": "Compliance / Risk",
-      "count": 7,
-      "hot": true,
+      "count": 4,
+      "hot": false,
       "salary_min": null,
       "salary_max": null,
       "salary_currency": "CHF",
       "country": "ch",
       "source": "adzuna",
-      "updated_at": "2026-10-12T14:16:39+08:00"
+      "updated_at": "2026-10-19T13:02:22+08:00"
+    },
+    {
+      "company": "Swissquote",
+      "zone": "CH",
+      "function": "Sales / BD",
+      "count": 1,
+      "hot": false,
+      "salary_min": null,
+      "salary_max": null,
+      "salary_currency": "CHF",
+      "country": "ch",
+      "source": "adzuna",
+      "updated_at": "2026-10-19T13:02:22+08:00"
+    },
+    {
+      "company": "XTB Germany",
+      "zone": "DE",
+      "function": "Compliance / Risk",
+      "count": 4,
+      "hot": false,
+      "salary_min": null,
+      "salary_max": null,
+      "salary_currency": "EUR",
+      "country": "de",
+      "source": "adzuna",
+      "updated_at": "2026-10-19T13:02:22+08:00"
     },
     {
       "company": "XTB (PL HQ)",
@@ -29,12 +55,12 @@
       "salary_currency": "PLN",
       "country": "pl",
       "source": "adzuna",
-      "updated_at": "2026-10-12T14:16:39+08:00"
+      "updated_at": "2026-10-19T13:02:22+08:00"
     },
     {
       "company": "XTB (PL HQ)",
       "zone": "PL",
-      "function": "Sales / BD",
+      "function": "Marketing",
       "count": 1,
       "hot": false,
       "salary_min": null,
@@ -42,38 +68,12 @@
       "salary_currency": "PLN",
       "country": "pl",
       "source": "adzuna",
-      "updated_at": "2026-10-12T14:16:39+08:00"
+      "updated_at": "2026-10-19T13:02:22+08:00"
     },
     {
       "company": "CMC Markets",
       "zone": "UK",
       "function": "Compliance / Risk",
-      "count": 2,
-      "hot": false,
-      "salary_min": null,
-      "salary_max": null,
-      "salary_currency": "GBP",
-      "country": "gb",
-      "source": "adzuna",
-      "updated_at": "2026-10-12T14:16:39+08:00"
-    },
-    {
-      "company": "IG Group",
-      "zone": "UK",
-      "function": "Compliance / Risk",
-      "count": 2,
-      "hot": false,
-      "salary_min": null,
-      "salary_max": null,
-      "salary_currency": "GBP",
-      "country": "gb",
-      "source": "adzuna",
-      "updated_at": "2026-10-12T14:16:39+08:00"
-    },
-    {
-      "company": "IG Group",
-      "zone": "UK",
-      "function": "Marketing",
       "count": 1,
       "hot": false,
       "salary_min": null,
@@ -81,7 +81,7 @@
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-10-12T14:16:39+08:00"
+      "updated_at": "2026-10-19T13:02:22+08:00"
     }
   ]
 }
