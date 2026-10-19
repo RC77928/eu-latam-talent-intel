@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T14:16:54+08:00",
+  "generated_at": "2026-10-19T13:02:44+08:00",
   "region": "latam",
   "region_label": "LATAM",
   "source": "adzuna",
@@ -8,7 +8,7 @@
     {
       "company": "BTG Pactual",
       "zone": "BR",
-      "function": "Compliance / Risk",
+      "function": "Marketing",
       "count": 2,
       "hot": false,
       "salary_min": null,
@@ -16,12 +16,12 @@
       "salary_currency": "BRL",
       "country": "br",
       "source": "adzuna",
-      "updated_at": "2026-10-12T14:16:54+08:00"
+      "updated_at": "2026-10-19T13:02:44+08:00"
     },
     {
       "company": "BTG Pactual",
       "zone": "BR",
-      "function": "Sales / BD",
+      "function": "Compliance / Risk",
       "count": 1,
       "hot": false,
       "salary_min": null,
@@ -29,7 +29,7 @@
       "salary_currency": "BRL",
       "country": "br",
       "source": "adzuna",
-      "updated_at": "2026-10-12T14:16:54+08:00"
+      "updated_at": "2026-10-19T13:02:44+08:00"
     }
   ]
 }
