@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-26T13:06:32+08:00",
+  "generated_at": "2026-11-02T14:33:52+08:00",
   "region": "eu",
   "region_label": "EU+UK",
   "source": "adzuna",
-  "record_count": 8,
+  "record_count": 7,
   "records": [
     {
       "company": "Swissquote",
@@ -16,7 +16,7 @@
       "salary_currency": "CHF",
       "country": "ch",
       "source": "adzuna",
-      "updated_at": "2026-10-26T13:06:32+08:00"
+      "updated_at": "2026-11-02T14:33:52+08:00"
     },
     {
       "company": "Swissquote",
@@ -29,7 +29,7 @@
       "salary_currency": "CHF",
       "country": "ch",
       "source": "adzuna",
-      "updated_at": "2026-10-26T13:06:32+08:00"
+      "updated_at": "2026-11-02T14:33:52+08:00"
     },
     {
       "company": "XTB Germany",
@@ -42,59 +42,33 @@
       "salary_currency": "EUR",
       "country": "de",
       "source": "adzuna",
-      "updated_at": "2026-10-26T13:06:32+08:00"
+      "updated_at": "2026-11-02T14:33:52+08:00"
     },
     {
       "company": "XTB (PL HQ)",
       "zone": "PL",
       "function": "Compliance / Risk",
-      "count": 1,
-      "hot": false,
-      "salary_min": null,
-      "salary_max": null,
-      "salary_currency": "PLN",
-      "country": "pl",
-      "source": "adzuna",
-      "updated_at": "2026-10-26T13:06:32+08:00"
-    },
-    {
-      "company": "XTB (PL HQ)",
-      "zone": "PL",
-      "function": "Marketing",
-      "count": 1,
-      "hot": false,
-      "salary_min": null,
-      "salary_max": null,
-      "salary_currency": "PLN",
-      "country": "pl",
-      "source": "adzuna",
-      "updated_at": "2026-10-26T13:06:32+08:00"
-    },
-    {
-      "company": "CMC Markets",
-      "zone": "UK",
-      "function": "Compliance / Risk",
-      "count": 1,
-      "hot": false,
-      "salary_min": null,
-      "salary_max": null,
-      "salary_currency": "GBP",
-      "country": "gb",
-      "source": "adzuna",
-      "updated_at": "2026-10-26T13:06:32+08:00"
-    },
-    {
-      "company": "IG Group",
-      "zone": "UK",
-      "function": "Marketing",
       "count": 2,
       "hot": false,
+      "salary_min": 173400,
+      "salary_max": 220800,
+      "salary_currency": "PLN",
+      "country": "pl",
+      "source": "adzuna",
+      "updated_at": "2026-11-02T14:33:52+08:00"
+    },
+    {
+      "company": "XTB (PL HQ)",
+      "zone": "PL",
+      "function": "Marketing",
+      "count": 1,
+      "hot": false,
       "salary_min": null,
       "salary_max": null,
-      "salary_currency": "GBP",
-      "country": "gb",
+      "salary_currency": "PLN",
+      "country": "pl",
       "source": "adzuna",
-      "updated_at": "2026-10-26T13:06:32+08:00"
+      "updated_at": "2026-11-02T14:33:52+08:00"
     },
     {
       "company": "IG Group",
@@ -107,7 +81,20 @@
       "salary_currency": "GBP",
       "country": "gb",
       "source": "adzuna",
-      "updated_at": "2026-10-26T13:06:32+08:00"
+      "updated_at": "2026-11-02T14:33:52+08:00"
+    },
+    {
+      "company": "IG Group",
+      "zone": "UK",
+      "function": "Marketing",
+      "count": 1,
+      "hot": false,
+      "salary_min": null,
+      "salary_max": null,
+      "salary_currency": "GBP",
+      "country": "gb",
+      "source": "adzuna",
+      "updated_at": "2026-11-02T14:33:52+08:00"
     }
   ]
 }
