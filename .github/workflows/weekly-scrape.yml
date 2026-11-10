@@ -3,8 +3,6 @@ name: Weekly EU+LATAM scrape
 # Monday 08:30 Asia/Taipei = Monday 00:30 UTC. Weekly cadence to stay under
 # Adzuna Trial free-tier quota (1000 req/month).
 on:
-  schedule:
-    - cron: "30 0 * * 1"
   workflow_dispatch: {}
 
 concurrency:
